@@ -2,5 +2,5 @@
 
 ## Proposta de projeto
 
-- Sistema de agendamento
- - 
+- Sistema de agendamento de consultas 
+ -  
