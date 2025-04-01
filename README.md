@@ -14,19 +14,19 @@
    - Registro de dados (nome, data de nascimento, telefone, etc.) e criação de histórico médico.
    
 2. **Cadastro de Profissionais:**
-   - Cadastro de médicos dermatologistas com horários de atendimento e especialidades.
+   - Cadastro de recepcionistas e médicos dermatologistas com horários de atendimento e especialidades.
 
 3. **Agendamento de Consultas:**
    - Interface para agendamento com seleção de médico, data e horário disponível.
 
 4. **Visualização de Consultas Agendadas:**
-   - Consulta de agendamentos futuros e opção de cancelamento ou reagendamento.
+   - Consulta de agendamentos futuros e opção de cancelamento ou reagendamento em um período de até 48 horas antes da data marcada.
 
 5. **Notificações e Lembretes:**
-   - Envio de lembretes automáticos de consultas para pacientes e médicos.
+   - Envio de lembretes automáticos via email de consultas para pacientes e médicos.
 
 6. **Relatórios e Histórico Médico:**
-   - Registro de consultas, observações e diagnósticos.
+   - Adicionar registro de consultas, observações e diagnósticos no cadastro do paciente.
 
 7. **Pesquisa e Filtro de Consultas:**
    - Busca de consultas por data, paciente, ou médico.
@@ -35,7 +35,7 @@
    - Gerenciamento de pacientes, médicos e horários de consulta.
 
 9. **Login e Autenticação:**
-   - Sistema de login com permissões de acesso (pacientes, médicos, administradores).
+   - Sistema de login com permissões de acesso (médicos, recepcionistas e administradores).
 
 
 ### **Histórias de Usuário**  
@@ -68,4 +68,4 @@
 
 9. **Login e Autenticação**  
    - Como um **Usuário**, eu gostaria de acessar o sistema com login e senha para garantir segurança e controle de acesso.  
-   - Como um **Administrador**, eu gostaria de definir diferentes permissões de acesso para médicos e atendentes para garantir que cada um tenha acesso apenas às funcionalidades necessárias.  
+   - Como um **Administrador**, eu gostaria de definir diferentes permissões de acesso para médicos e atendentes para garantir que cada um tenha acesso apenas às funcionalidades necessárias.
