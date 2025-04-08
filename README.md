@@ -69,3 +69,9 @@
 9. **Login e Autenticação**  
    - Como um **Usuário**, eu gostaria de acessar o sistema com login e senha para garantir segurança e controle de acesso.  
    - Como um **Administrador**, eu gostaria de definir diferentes permissões de acesso para médicos e atendentes para garantir que cada um tenha acesso apenas às funcionalidades necessárias.
+
+### Modelo ER
+
+<div style="text-align: center;">
+  <img src="./database_diagram.png" width=800 alt="Diagrama do banco de dados">
+</div>
