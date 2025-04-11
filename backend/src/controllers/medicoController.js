@@ -1,11 +1,11 @@
-import medicoServices from "../services/medicoServices.js";
+import medicoService from "../services/medicoService.js";
 
 
 
 class medicoController {
   static async listarMedicos(req, res) {
     try {
-      const medico = await medicoServices.getAllMedicos();
+      const medico = await medicoService.getAllMedicos();
 
       res.status(200).json(medico);
     } catch (error) {

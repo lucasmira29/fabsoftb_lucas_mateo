@@ -6,4 +6,5 @@ const router = express.Router();
 router.get("/", (req, res) => medicoController.listarMedicos(req, res));
 
 
+
 export default router;

@@ -1,9 +1,14 @@
 import prisma from "../config/dbConfig.js";
 
 
-class userServices {
+class userService {
   static async getUserByCpfEmail(data) {
-    return await prisma.user.findUnique({ where: data });
+    return await prisma.user.findFirst({ where: {
+      OR: [
+        { document: data.document },
+        { email: data.email },
+      ],
+    } });
   }
 
   static async getUsersByRole(role) {
@@ -21,4 +26,4 @@ class userServices {
 }
 
 
-export default userServices;
+export default userService;

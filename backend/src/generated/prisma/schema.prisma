@@ -64,7 +64,7 @@ model Medico {
   id        Int              @id
   crm       String           @unique @db.VarChar(20)
   specialty String           @db.VarChar(100)
-  user      User             @relation(fields: [id], references: [id])
+  user      User             @relation(fields: [id], references: [id], onDelete: Cascade)
   consultas Consulta[]
   registros RegistroMedico[]
   horarios  HorarioMedico[]
@@ -76,7 +76,7 @@ model Paciente {
   id        Int              @id
   history   String?
   allergies String?
-  user      User             @relation(fields: [id], references: [id])
+  user      User             @relation(fields: [id], references: [id], onDelete: Cascade)
   consultas Consulta[]
   registros RegistroMedico[]
 
@@ -85,7 +85,7 @@ model Paciente {
 
 model Recepcionista {
   id   Int  @id
-  user User @relation(fields: [id], references: [id])
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
 
   @@map("recepcionistas")
 }
@@ -100,8 +100,8 @@ model Consulta {
   created_at  DateTime       @default(now())
   updated_at  DateTime       @updatedAt
 
-  paciente  Paciente            @relation(fields: [paciente_id], references: [id])
-  medico    Medico              @relation(fields: [medico_id], references: [id])
+  paciente  Paciente            @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+  medico    Medico              @relation(fields: [medico_id], references: [id], onDelete: Cascade)
   historico HistoricoConsulta[]
   registros RegistroMedico[]
 
@@ -132,9 +132,9 @@ model RegistroMedico {
   tratamento  String?
   created_at  DateTime @default(now())
 
-  consulta Consulta @relation(fields: [consulta_id], references: [id])
-  medico   Medico   @relation(fields: [medico_id], references: [id])
-  paciente Paciente @relation(fields: [paciente_id], references: [id])
+  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)
+  medico   Medico   @relation(fields: [medico_id], references: [id], onDelete: Cascade)
+  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
 
   @@map("registros_medicos")
 }
@@ -146,7 +146,7 @@ model HorarioMedico {
   start_time  DateTime  @db.Time(0)
   end_time    DateTime  @db.Time(0)
 
-  medico Medico @relation(fields: [medico_id], references: [id])
+  medico Medico @relation(fields: [medico_id], references: [id], onDelete: Cascade)
 
   @@map("horarios_medicos")
 }

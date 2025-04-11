@@ -1,4 +1,4 @@
-import userServices from '../services/userServices.js';
+import userService from '../services/userService.js';
 
 class userController {
   static async verificarEmailOuCpf(req, res) {
@@ -14,7 +14,7 @@ class userController {
         email,
       };
 
-      const user = await userServices.getUserByCpfEmail(data);
+      const user = await userService.getUserByCpfEmail(data);
   
       res.status(200).json(user);
 
@@ -28,7 +28,7 @@ class userController {
     try {
       const { role } = req.query;
   
-      const users = await userServices.getUsersByRole(role);
+      const users = await userService.getUsersByRole(role);
   
       return res.status(200).json(users);
     } catch (error) {
@@ -41,7 +41,7 @@ class userController {
     try {
       const { id } = req.params;
       
-      const user = await userServices.getUserById(Number(id));
+      const user = await userService.getUserById(Number(id));
       if (user) {
         return res.status(200).json(user);
       }
