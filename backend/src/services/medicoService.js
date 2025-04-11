@@ -28,12 +28,25 @@ class medicoService {
 
   static async getAllMedicos() {
     return await prisma.medico.findMany({
+      where: {
+        user: {
+          deleted_at: null,
+        },
+      },
       include: {
         user: true,
       },
     });
   } 
-}
 
+
+  static async getMedicoById(id) {
+    return await prisma.medico.findUnique({
+      where: { id },
+      include: { user: true },
+    });
+  }
+
+}
 
 export default medicoService;

@@ -24,7 +24,7 @@ class pacienteController {
         !password
       ) {
         return res
-          .status(404)
+          .status(400)
           .json({ message: 'Todos os dados são obrigatórios.' });
       }
 
@@ -106,6 +106,26 @@ class pacienteController {
     }
   }
   
+
+  static async deletePaciente(req, res) {
+    const { id } = req.params;
+
+    try {
+      const existingPaciente = await pacienteService.getPacienteById(Number(id));
+
+      if (!existingPaciente) {
+        return res.status(404).json({ message: 'Paciente não encontrado' });
+      }
+
+      await pacienteService.deletePaciente(Number(id));
+
+      res.status(200).json({ message: "Paciente deletado com sucesso" });
+
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: 'Erro ao deletar paciente' });
+    }
+  }
 }
 
 export default pacienteController;

@@ -25,6 +25,11 @@ class pacienteService {
 
   static async getAllPacientes() {
     return await prisma.paciente.findMany({
+      where: {
+        user : {
+          deleted_at: null,
+        },
+      },
       include: {
         user: true,
       },
@@ -42,6 +47,15 @@ class pacienteService {
     return await prisma.user.update({
       where: { id },
       data: newData,
+    });
+  }
+
+  static async deletePaciente(id) {
+    return await prisma.user.update({
+      where: { id },
+      data: {
+        deleted_at: new Date(),
+      },
     });
   }
 }
