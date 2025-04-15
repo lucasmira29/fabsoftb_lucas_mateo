@@ -134,7 +134,6 @@ exports.Prisma.UserScalarFieldEnum = {
 
 exports.Prisma.MedicoScalarFieldEnum = {
   id: 'id',
-  crm: 'crm',
   specialty: 'specialty'
 };
 
@@ -207,7 +206,6 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MedicoOrderByRelevanceFieldEnum = {
-  crm: 'crm',
   specialty: 'specialty'
 };
 

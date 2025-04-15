@@ -43,11 +43,11 @@ class medicoController {
 
       const medico = await medicoService.createMedico(userData, specialty);
 
-      res.status(200).json({ message: 'Médico cadastrado', medico });
+      return res.status(200).json({ message: 'Médico cadastrado com sucesso!', medico });
 
     } catch (error) {
       console.error(error);
-      
+      return res.status(500).json({ message: "Ocorreu um erro ao cadastrar médico" });
     }
   }
   
@@ -78,6 +78,47 @@ class medicoController {
       res.status(500).json({ message: "Erro ao ao listar médico por Id" });
     }
   }
+
+
+  static async updateMedico(req, res) {
+    const { id } = req.params;
+    const data = req.body;
+
+    try {
+      const existingMedico = await medicoService.getMedicoById(Number(id));
+
+      if (!existingMedico) {
+        return res.status(404).json({ message: 'Médico não encontrado' });
+      }
+
+      const updatedMedico = await medicoService.updateMedico(Number(id), data);
+
+      return res.status(200).json(updatedMedico);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Erro ao atualizar médico', error });
+    }
+  }
+
+  static async deleteMedico(req, res) {
+    const { id } = req.params;
+
+    try {
+      const existingMedico = await medicoService.getMedicoById(Number(id));
+
+      if (!existingMedico) {
+        return res.status(404).json({ message: 'Médico não encontrado' });
+      }
+
+      await medicoService.deleteMedico(Number(id));
+
+      res.status(200).json({ message: "Médico deletado com sucesso" });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: 'Erro ao deletar médico' });
+    }
+  }
+  
 }
 
 export default medicoController;

@@ -47,6 +47,22 @@ class medicoService {
     });
   }
 
+  static async updateMedico(id, newData) {
+    return await prisma.user.update({
+      where: { id },
+      data: newData,
+    });
+  }
+
+  static async deleteMedico(id) {
+    return await prisma.user.update({
+      where: { id },
+      data: {
+        deleted_at: new Date(),
+      },
+    });
+  }
+
 }
 
 export default medicoService;

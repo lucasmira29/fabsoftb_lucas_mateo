@@ -62,7 +62,6 @@ model User {
 
 model Medico {
   id         Int     @id
-  crm        String  @unique @db.VarChar(20)
   specialty  String  @db.VarChar(100)
   user       User    @relation(fields: [id], references: [id], onDelete: Cascade)
   consultas  Consulta[]

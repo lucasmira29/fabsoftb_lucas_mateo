@@ -2820,19 +2820,16 @@ export namespace Prisma {
 
   export type MedicoMinAggregateOutputType = {
     id: number | null
-    crm: string | null
     specialty: string | null
   }
 
   export type MedicoMaxAggregateOutputType = {
     id: number | null
-    crm: string | null
     specialty: string | null
   }
 
   export type MedicoCountAggregateOutputType = {
     id: number
-    crm: number
     specialty: number
     _all: number
   }
@@ -2848,19 +2845,16 @@ export namespace Prisma {
 
   export type MedicoMinAggregateInputType = {
     id?: true
-    crm?: true
     specialty?: true
   }
 
   export type MedicoMaxAggregateInputType = {
     id?: true
-    crm?: true
     specialty?: true
   }
 
   export type MedicoCountAggregateInputType = {
     id?: true
-    crm?: true
     specialty?: true
     _all?: true
   }
@@ -2953,7 +2947,6 @@ export namespace Prisma {
 
   export type MedicoGroupByOutputType = {
     id: number
-    crm: string
     specialty: string
     _count: MedicoCountAggregateOutputType | null
     _avg: MedicoAvgAggregateOutputType | null
@@ -2978,7 +2971,6 @@ export namespace Prisma {
 
   export type MedicoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    crm?: boolean
     specialty?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     consultas?: boolean | Medico$consultasArgs<ExtArgs>
@@ -2991,11 +2983,10 @@ export namespace Prisma {
 
   export type MedicoSelectScalar = {
     id?: boolean
-    crm?: boolean
     specialty?: boolean
   }
 
-  export type MedicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "crm" | "specialty", ExtArgs["result"]["medico"]>
+  export type MedicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "specialty", ExtArgs["result"]["medico"]>
   export type MedicoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     consultas?: boolean | Medico$consultasArgs<ExtArgs>
@@ -3014,7 +3005,6 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      crm: string
       specialty: string
     }, ExtArgs["result"]["medico"]>
     composites: {}
@@ -3390,7 +3380,6 @@ export namespace Prisma {
    */
   interface MedicoFieldRefs {
     readonly id: FieldRef<"Medico", 'Int'>
-    readonly crm: FieldRef<"Medico", 'String'>
     readonly specialty: FieldRef<"Medico", 'String'>
   }
     
@@ -9812,7 +9801,6 @@ export namespace Prisma {
 
   export const MedicoScalarFieldEnum: {
     id: 'id',
-    crm: 'crm',
     specialty: 'specialty'
   };
 
@@ -9915,7 +9903,6 @@ export namespace Prisma {
 
 
   export const MedicoOrderByRelevanceFieldEnum: {
-    crm: 'crm',
     specialty: 'specialty'
   };
 
@@ -10124,7 +10111,6 @@ export namespace Prisma {
     OR?: MedicoWhereInput[]
     NOT?: MedicoWhereInput | MedicoWhereInput[]
     id?: IntFilter<"Medico"> | number
-    crm?: StringFilter<"Medico"> | string
     specialty?: StringFilter<"Medico"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     consultas?: ConsultaListRelationFilter
@@ -10134,7 +10120,6 @@ export namespace Prisma {
 
   export type MedicoOrderByWithRelationInput = {
     id?: SortOrder
-    crm?: SortOrder
     specialty?: SortOrder
     user?: UserOrderByWithRelationInput
     consultas?: ConsultaOrderByRelationAggregateInput
@@ -10145,7 +10130,6 @@ export namespace Prisma {
 
   export type MedicoWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    crm?: string
     AND?: MedicoWhereInput | MedicoWhereInput[]
     OR?: MedicoWhereInput[]
     NOT?: MedicoWhereInput | MedicoWhereInput[]
@@ -10154,11 +10138,10 @@ export namespace Prisma {
     consultas?: ConsultaListRelationFilter
     registros?: RegistroMedicoListRelationFilter
     horarios?: HorarioMedicoListRelationFilter
-  }, "id" | "crm">
+  }, "id">
 
   export type MedicoOrderByWithAggregationInput = {
     id?: SortOrder
-    crm?: SortOrder
     specialty?: SortOrder
     _count?: MedicoCountOrderByAggregateInput
     _avg?: MedicoAvgOrderByAggregateInput
@@ -10172,7 +10155,6 @@ export namespace Prisma {
     OR?: MedicoScalarWhereWithAggregatesInput[]
     NOT?: MedicoScalarWhereWithAggregatesInput | MedicoScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Medico"> | number
-    crm?: StringWithAggregatesFilter<"Medico"> | string
     specialty?: StringWithAggregatesFilter<"Medico"> | string
   }
 
@@ -10670,7 +10652,6 @@ export namespace Prisma {
   }
 
   export type MedicoCreateInput = {
-    crm: string
     specialty: string
     user: UserCreateNestedOneWithoutMedicoInput
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
@@ -10680,7 +10661,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedCreateInput = {
     id: number
-    crm: string
     specialty: string
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     registros?: RegistroMedicoUncheckedCreateNestedManyWithoutMedicoInput
@@ -10688,7 +10668,6 @@ export namespace Prisma {
   }
 
   export type MedicoUpdateInput = {
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutMedicoNestedInput
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
@@ -10698,7 +10677,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     registros?: RegistroMedicoUncheckedUpdateManyWithoutMedicoNestedInput
@@ -10707,18 +10685,15 @@ export namespace Prisma {
 
   export type MedicoCreateManyInput = {
     id: number
-    crm: string
     specialty: string
   }
 
   export type MedicoUpdateManyMutationInput = {
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
   }
 
   export type MedicoUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
   }
 
@@ -11352,7 +11327,6 @@ export namespace Prisma {
 
   export type MedicoCountOrderByAggregateInput = {
     id?: SortOrder
-    crm?: SortOrder
     specialty?: SortOrder
   }
 
@@ -11362,13 +11336,11 @@ export namespace Prisma {
 
   export type MedicoMaxOrderByAggregateInput = {
     id?: SortOrder
-    crm?: SortOrder
     specialty?: SortOrder
   }
 
   export type MedicoMinOrderByAggregateInput = {
     id?: SortOrder
-    crm?: SortOrder
     specialty?: SortOrder
   }
 
@@ -12537,7 +12509,6 @@ export namespace Prisma {
   }
 
   export type MedicoCreateWithoutUserInput = {
-    crm: string
     specialty: string
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     registros?: RegistroMedicoCreateNestedManyWithoutMedicoInput
@@ -12545,7 +12516,6 @@ export namespace Prisma {
   }
 
   export type MedicoUncheckedCreateWithoutUserInput = {
-    crm: string
     specialty: string
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     registros?: RegistroMedicoUncheckedCreateNestedManyWithoutMedicoInput
@@ -12626,7 +12596,6 @@ export namespace Prisma {
   }
 
   export type MedicoUpdateWithoutUserInput = {
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     registros?: RegistroMedicoUpdateManyWithoutMedicoNestedInput
@@ -12634,7 +12603,6 @@ export namespace Prisma {
   }
 
   export type MedicoUncheckedUpdateWithoutUserInput = {
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     registros?: RegistroMedicoUncheckedUpdateManyWithoutMedicoNestedInput
@@ -13257,7 +13225,6 @@ export namespace Prisma {
   }
 
   export type MedicoCreateWithoutConsultasInput = {
-    crm: string
     specialty: string
     user: UserCreateNestedOneWithoutMedicoInput
     registros?: RegistroMedicoCreateNestedManyWithoutMedicoInput
@@ -13266,7 +13233,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedCreateWithoutConsultasInput = {
     id: number
-    crm: string
     specialty: string
     registros?: RegistroMedicoUncheckedCreateNestedManyWithoutMedicoInput
     horarios?: HorarioMedicoUncheckedCreateNestedManyWithoutMedicoInput
@@ -13368,7 +13334,6 @@ export namespace Prisma {
   }
 
   export type MedicoUpdateWithoutConsultasInput = {
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutMedicoNestedInput
     registros?: RegistroMedicoUpdateManyWithoutMedicoNestedInput
@@ -13377,7 +13342,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedUpdateWithoutConsultasInput = {
     id?: IntFieldUpdateOperationsInput | number
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     registros?: RegistroMedicoUncheckedUpdateManyWithoutMedicoNestedInput
     horarios?: HorarioMedicoUncheckedUpdateManyWithoutMedicoNestedInput
@@ -13592,7 +13556,6 @@ export namespace Prisma {
   }
 
   export type MedicoCreateWithoutRegistrosInput = {
-    crm: string
     specialty: string
     user: UserCreateNestedOneWithoutMedicoInput
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
@@ -13601,7 +13564,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedCreateWithoutRegistrosInput = {
     id: number
-    crm: string
     specialty: string
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     horarios?: HorarioMedicoUncheckedCreateNestedManyWithoutMedicoInput
@@ -13677,7 +13639,6 @@ export namespace Prisma {
   }
 
   export type MedicoUpdateWithoutRegistrosInput = {
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutMedicoNestedInput
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
@@ -13686,7 +13647,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedUpdateWithoutRegistrosInput = {
     id?: IntFieldUpdateOperationsInput | number
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     horarios?: HorarioMedicoUncheckedUpdateManyWithoutMedicoNestedInput
@@ -13718,7 +13678,6 @@ export namespace Prisma {
   }
 
   export type MedicoCreateWithoutHorariosInput = {
-    crm: string
     specialty: string
     user: UserCreateNestedOneWithoutMedicoInput
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
@@ -13727,7 +13686,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedCreateWithoutHorariosInput = {
     id: number
-    crm: string
     specialty: string
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     registros?: RegistroMedicoUncheckedCreateNestedManyWithoutMedicoInput
@@ -13750,7 +13708,6 @@ export namespace Prisma {
   }
 
   export type MedicoUpdateWithoutHorariosInput = {
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutMedicoNestedInput
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
@@ -13759,7 +13716,6 @@ export namespace Prisma {
 
   export type MedicoUncheckedUpdateWithoutHorariosInput = {
     id?: IntFieldUpdateOperationsInput | number
-    crm?: StringFieldUpdateOperationsInput | string
     specialty?: StringFieldUpdateOperationsInput | string
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     registros?: RegistroMedicoUncheckedUpdateManyWithoutMedicoNestedInput
