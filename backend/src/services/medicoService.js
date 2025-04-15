@@ -4,7 +4,7 @@ import { hashPassword } from "../utils/hash.js";
 
 class medicoService {
   
-  static async createMedico(userData) {
+  static async createMedico(userData, specialty) {
     return prisma.$transaction(async (tx) => {
       const hashedPassword = await hashPassword(userData.password);
       const user = await tx.user.create({
@@ -17,7 +17,7 @@ class medicoService {
       const medico = await tx.medico.create({
         data: {
           id: user.id,
-
+          specialty: specialty,
         },
       });
 
