@@ -249,7 +249,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Lucas\\documents\\Projetos\\fabsoftb_lucas_mateo\\backend\\src\\generated\\prisma",
+      "value": "C:\\Users\\1144006564\\Desktop\\fabsoftb_lucas_mateo\\backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -263,7 +263,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Lucas\\documents\\Projetos\\fabsoftb_lucas_mateo\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\1144006564\\Desktop\\fabsoftb_lucas_mateo\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -281,7 +281,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mysql://root:291015@localhost:3306/fabsoft"
+        "value": "mysql://root:univille@localhost:3306/perebentos"
       }
     }
   },
