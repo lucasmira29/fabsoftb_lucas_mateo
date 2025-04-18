@@ -1,10 +1,23 @@
 import consultaService from '../services/consultaService.js';
 
 class consultaController {
+  
   static async agendar(req, res) {
     try {
-      const data = req.body;
-      const consulta = await consultaService.agendarConsulta(data);
+      const { paciente_id, medico_id, date_time, status, description } = req.body;
+  
+      if (!paciente_id || !medico_id || !date_time || !status) {
+        return res.status(400).json({ message: 'Campos obrigatórios faltando' });
+      }
+  
+      const consulta = await consultaService.agendarConsulta({
+        paciente_id,
+        medico_id,
+        date_time: new Date(date_time),
+        status,
+        description,
+      });
+  
       res.status(201).json({ message: 'Consulta agendada', consulta });
     } catch (error) {
       res.status(500).json({ message: 'Erro ao agendar consulta', error });

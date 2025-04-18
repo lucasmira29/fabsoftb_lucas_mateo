@@ -5745,19 +5745,17 @@ export namespace Prisma {
   }
 
   export type ConsultaAvgAggregateOutputType = {
-    id: number | null
     paciente_id: number | null
     medico_id: number | null
   }
 
   export type ConsultaSumAggregateOutputType = {
-    id: number | null
     paciente_id: number | null
     medico_id: number | null
   }
 
   export type ConsultaMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     paciente_id: number | null
     medico_id: number | null
     date_time: Date | null
@@ -5768,7 +5766,7 @@ export namespace Prisma {
   }
 
   export type ConsultaMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     paciente_id: number | null
     medico_id: number | null
     date_time: Date | null
@@ -5792,13 +5790,11 @@ export namespace Prisma {
 
 
   export type ConsultaAvgAggregateInputType = {
-    id?: true
     paciente_id?: true
     medico_id?: true
   }
 
   export type ConsultaSumAggregateInputType = {
-    id?: true
     paciente_id?: true
     medico_id?: true
   }
@@ -5924,7 +5920,7 @@ export namespace Prisma {
   }
 
   export type ConsultaGroupByOutputType = {
-    id: number
+    id: string
     paciente_id: number
     medico_id: number
     date_time: Date
@@ -6000,7 +5996,7 @@ export namespace Prisma {
       registros: Prisma.$RegistroMedicoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       paciente_id: number
       medico_id: number
       date_time: Date
@@ -6381,7 +6377,7 @@ export namespace Prisma {
    * Fields of the Consulta model
    */
   interface ConsultaFieldRefs {
-    readonly id: FieldRef<"Consulta", 'Int'>
+    readonly id: FieldRef<"Consulta", 'String'>
     readonly paciente_id: FieldRef<"Consulta", 'Int'>
     readonly medico_id: FieldRef<"Consulta", 'Int'>
     readonly date_time: FieldRef<"Consulta", 'DateTime'>
@@ -6812,19 +6808,17 @@ export namespace Prisma {
 
   export type HistoricoConsultaAvgAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
     realizado_por: number | null
   }
 
   export type HistoricoConsultaSumAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
     realizado_por: number | null
   }
 
   export type HistoricoConsultaMinAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
+    consulta_id: string | null
     acao: $Enums.AcaoConsulta | null
     realizado_por: number | null
     data_acao: Date | null
@@ -6833,7 +6827,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaMaxAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
+    consulta_id: string | null
     acao: $Enums.AcaoConsulta | null
     realizado_por: number | null
     data_acao: Date | null
@@ -6853,13 +6847,11 @@ export namespace Prisma {
 
   export type HistoricoConsultaAvgAggregateInputType = {
     id?: true
-    consulta_id?: true
     realizado_por?: true
   }
 
   export type HistoricoConsultaSumAggregateInputType = {
     id?: true
-    consulta_id?: true
     realizado_por?: true
   }
 
@@ -6979,7 +6971,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaGroupByOutputType = {
     id: number
-    consulta_id: number
+    consulta_id: string
     acao: $Enums.AcaoConsulta
     realizado_por: number
     data_acao: Date
@@ -7041,7 +7033,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      consulta_id: number
+      consulta_id: string
       acao: $Enums.AcaoConsulta
       realizado_por: number
       data_acao: Date
@@ -7418,7 +7410,7 @@ export namespace Prisma {
    */
   interface HistoricoConsultaFieldRefs {
     readonly id: FieldRef<"HistoricoConsulta", 'Int'>
-    readonly consulta_id: FieldRef<"HistoricoConsulta", 'Int'>
+    readonly consulta_id: FieldRef<"HistoricoConsulta", 'String'>
     readonly acao: FieldRef<"HistoricoConsulta", 'AcaoConsulta'>
     readonly realizado_por: FieldRef<"HistoricoConsulta", 'Int'>
     readonly data_acao: FieldRef<"HistoricoConsulta", 'DateTime'>
@@ -7798,21 +7790,19 @@ export namespace Prisma {
 
   export type RegistroMedicoAvgAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
     medico_id: number | null
     paciente_id: number | null
   }
 
   export type RegistroMedicoSumAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
     medico_id: number | null
     paciente_id: number | null
   }
 
   export type RegistroMedicoMinAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
+    consulta_id: string | null
     medico_id: number | null
     paciente_id: number | null
     observacoes: string | null
@@ -7823,7 +7813,7 @@ export namespace Prisma {
 
   export type RegistroMedicoMaxAggregateOutputType = {
     id: number | null
-    consulta_id: number | null
+    consulta_id: string | null
     medico_id: number | null
     paciente_id: number | null
     observacoes: string | null
@@ -7847,14 +7837,12 @@ export namespace Prisma {
 
   export type RegistroMedicoAvgAggregateInputType = {
     id?: true
-    consulta_id?: true
     medico_id?: true
     paciente_id?: true
   }
 
   export type RegistroMedicoSumAggregateInputType = {
     id?: true
-    consulta_id?: true
     medico_id?: true
     paciente_id?: true
   }
@@ -7981,7 +7969,7 @@ export namespace Prisma {
 
   export type RegistroMedicoGroupByOutputType = {
     id: number
-    consulta_id: number
+    consulta_id: string
     medico_id: number
     paciente_id: number
     observacoes: string | null
@@ -8052,7 +8040,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      consulta_id: number
+      consulta_id: string
       medico_id: number
       paciente_id: number
       observacoes: string | null
@@ -8432,7 +8420,7 @@ export namespace Prisma {
    */
   interface RegistroMedicoFieldRefs {
     readonly id: FieldRef<"RegistroMedico", 'Int'>
-    readonly consulta_id: FieldRef<"RegistroMedico", 'Int'>
+    readonly consulta_id: FieldRef<"RegistroMedico", 'String'>
     readonly medico_id: FieldRef<"RegistroMedico", 'Int'>
     readonly paciente_id: FieldRef<"RegistroMedico", 'Int'>
     readonly observacoes: FieldRef<"RegistroMedico", 'String'>
@@ -9918,6 +9906,7 @@ export namespace Prisma {
 
 
   export const ConsultaOrderByRelevanceFieldEnum: {
+    id: 'id',
     description: 'description'
   };
 
@@ -9925,6 +9914,7 @@ export namespace Prisma {
 
 
   export const HistoricoConsultaOrderByRelevanceFieldEnum: {
+    consulta_id: 'consulta_id',
     observacao: 'observacao'
   };
 
@@ -9932,6 +9922,7 @@ export namespace Prisma {
 
 
   export const RegistroMedicoOrderByRelevanceFieldEnum: {
+    consulta_id: 'consulta_id',
     observacoes: 'observacoes',
     diagnostico: 'diagnostico',
     tratamento: 'tratamento'
@@ -10253,7 +10244,7 @@ export namespace Prisma {
     AND?: ConsultaWhereInput | ConsultaWhereInput[]
     OR?: ConsultaWhereInput[]
     NOT?: ConsultaWhereInput | ConsultaWhereInput[]
-    id?: IntFilter<"Consulta"> | number
+    id?: StringFilter<"Consulta"> | string
     paciente_id?: IntFilter<"Consulta"> | number
     medico_id?: IntFilter<"Consulta"> | number
     date_time?: DateTimeFilter<"Consulta"> | Date | string
@@ -10284,7 +10275,7 @@ export namespace Prisma {
   }
 
   export type ConsultaWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     AND?: ConsultaWhereInput | ConsultaWhereInput[]
     OR?: ConsultaWhereInput[]
     NOT?: ConsultaWhereInput | ConsultaWhereInput[]
@@ -10321,7 +10312,7 @@ export namespace Prisma {
     AND?: ConsultaScalarWhereWithAggregatesInput | ConsultaScalarWhereWithAggregatesInput[]
     OR?: ConsultaScalarWhereWithAggregatesInput[]
     NOT?: ConsultaScalarWhereWithAggregatesInput | ConsultaScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Consulta"> | number
+    id?: StringWithAggregatesFilter<"Consulta"> | string
     paciente_id?: IntWithAggregatesFilter<"Consulta"> | number
     medico_id?: IntWithAggregatesFilter<"Consulta"> | number
     date_time?: DateTimeWithAggregatesFilter<"Consulta"> | Date | string
@@ -10336,7 +10327,7 @@ export namespace Prisma {
     OR?: HistoricoConsultaWhereInput[]
     NOT?: HistoricoConsultaWhereInput | HistoricoConsultaWhereInput[]
     id?: IntFilter<"HistoricoConsulta"> | number
-    consulta_id?: IntFilter<"HistoricoConsulta"> | number
+    consulta_id?: StringFilter<"HistoricoConsulta"> | string
     acao?: EnumAcaoConsultaFilter<"HistoricoConsulta"> | $Enums.AcaoConsulta
     realizado_por?: IntFilter<"HistoricoConsulta"> | number
     data_acao?: DateTimeFilter<"HistoricoConsulta"> | Date | string
@@ -10362,7 +10353,7 @@ export namespace Prisma {
     AND?: HistoricoConsultaWhereInput | HistoricoConsultaWhereInput[]
     OR?: HistoricoConsultaWhereInput[]
     NOT?: HistoricoConsultaWhereInput | HistoricoConsultaWhereInput[]
-    consulta_id?: IntFilter<"HistoricoConsulta"> | number
+    consulta_id?: StringFilter<"HistoricoConsulta"> | string
     acao?: EnumAcaoConsultaFilter<"HistoricoConsulta"> | $Enums.AcaoConsulta
     realizado_por?: IntFilter<"HistoricoConsulta"> | number
     data_acao?: DateTimeFilter<"HistoricoConsulta"> | Date | string
@@ -10390,7 +10381,7 @@ export namespace Prisma {
     OR?: HistoricoConsultaScalarWhereWithAggregatesInput[]
     NOT?: HistoricoConsultaScalarWhereWithAggregatesInput | HistoricoConsultaScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"HistoricoConsulta"> | number
-    consulta_id?: IntWithAggregatesFilter<"HistoricoConsulta"> | number
+    consulta_id?: StringWithAggregatesFilter<"HistoricoConsulta"> | string
     acao?: EnumAcaoConsultaWithAggregatesFilter<"HistoricoConsulta"> | $Enums.AcaoConsulta
     realizado_por?: IntWithAggregatesFilter<"HistoricoConsulta"> | number
     data_acao?: DateTimeWithAggregatesFilter<"HistoricoConsulta"> | Date | string
@@ -10402,7 +10393,7 @@ export namespace Prisma {
     OR?: RegistroMedicoWhereInput[]
     NOT?: RegistroMedicoWhereInput | RegistroMedicoWhereInput[]
     id?: IntFilter<"RegistroMedico"> | number
-    consulta_id?: IntFilter<"RegistroMedico"> | number
+    consulta_id?: StringFilter<"RegistroMedico"> | string
     medico_id?: IntFilter<"RegistroMedico"> | number
     paciente_id?: IntFilter<"RegistroMedico"> | number
     observacoes?: StringNullableFilter<"RegistroMedico"> | string | null
@@ -10434,7 +10425,7 @@ export namespace Prisma {
     AND?: RegistroMedicoWhereInput | RegistroMedicoWhereInput[]
     OR?: RegistroMedicoWhereInput[]
     NOT?: RegistroMedicoWhereInput | RegistroMedicoWhereInput[]
-    consulta_id?: IntFilter<"RegistroMedico"> | number
+    consulta_id?: StringFilter<"RegistroMedico"> | string
     medico_id?: IntFilter<"RegistroMedico"> | number
     paciente_id?: IntFilter<"RegistroMedico"> | number
     observacoes?: StringNullableFilter<"RegistroMedico"> | string | null
@@ -10467,7 +10458,7 @@ export namespace Prisma {
     OR?: RegistroMedicoScalarWhereWithAggregatesInput[]
     NOT?: RegistroMedicoScalarWhereWithAggregatesInput | RegistroMedicoScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"RegistroMedico"> | number
-    consulta_id?: IntWithAggregatesFilter<"RegistroMedico"> | number
+    consulta_id?: StringWithAggregatesFilter<"RegistroMedico"> | string
     medico_id?: IntWithAggregatesFilter<"RegistroMedico"> | number
     paciente_id?: IntWithAggregatesFilter<"RegistroMedico"> | number
     observacoes?: StringNullableWithAggregatesFilter<"RegistroMedico"> | string | null
@@ -10775,6 +10766,7 @@ export namespace Prisma {
   }
 
   export type ConsultaCreateInput = {
+    id?: string
     date_time: Date | string
     status: $Enums.ConsultaStatus
     description?: string | null
@@ -10787,7 +10779,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedCreateInput = {
-    id?: number
+    id?: string
     paciente_id: number
     medico_id: number
     date_time: Date | string
@@ -10800,6 +10792,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10812,7 +10805,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     medico_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10825,7 +10818,7 @@ export namespace Prisma {
   }
 
   export type ConsultaCreateManyInput = {
-    id?: number
+    id?: string
     paciente_id: number
     medico_id: number
     date_time: Date | string
@@ -10836,6 +10829,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10844,7 +10838,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     medico_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10864,7 +10858,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaUncheckedCreateInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     acao: $Enums.AcaoConsulta
     realizado_por: number
     data_acao: Date | string
@@ -10881,7 +10875,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     acao?: EnumAcaoConsultaFieldUpdateOperationsInput | $Enums.AcaoConsulta
     realizado_por?: IntFieldUpdateOperationsInput | number
     data_acao?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10890,7 +10884,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaCreateManyInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     acao: $Enums.AcaoConsulta
     realizado_por: number
     data_acao: Date | string
@@ -10905,7 +10899,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     acao?: EnumAcaoConsultaFieldUpdateOperationsInput | $Enums.AcaoConsulta
     realizado_por?: IntFieldUpdateOperationsInput | number
     data_acao?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10924,7 +10918,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedCreateInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     medico_id: number
     paciente_id: number
     observacoes?: string | null
@@ -10945,7 +10939,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     medico_id?: IntFieldUpdateOperationsInput | number
     paciente_id?: IntFieldUpdateOperationsInput | number
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10956,7 +10950,7 @@ export namespace Prisma {
 
   export type RegistroMedicoCreateManyInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     medico_id: number
     paciente_id: number
     observacoes?: string | null
@@ -10974,7 +10968,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     medico_id?: IntFieldUpdateOperationsInput | number
     paciente_id?: IntFieldUpdateOperationsInput | number
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11435,7 +11429,6 @@ export namespace Prisma {
   }
 
   export type ConsultaAvgOrderByAggregateInput = {
-    id?: SortOrder
     paciente_id?: SortOrder
     medico_id?: SortOrder
   }
@@ -11463,7 +11456,6 @@ export namespace Prisma {
   }
 
   export type ConsultaSumOrderByAggregateInput = {
-    id?: SortOrder
     paciente_id?: SortOrder
     medico_id?: SortOrder
   }
@@ -11507,7 +11499,6 @@ export namespace Prisma {
 
   export type HistoricoConsultaAvgOrderByAggregateInput = {
     id?: SortOrder
-    consulta_id?: SortOrder
     realizado_por?: SortOrder
   }
 
@@ -11531,7 +11522,6 @@ export namespace Prisma {
 
   export type HistoricoConsultaSumOrderByAggregateInput = {
     id?: SortOrder
-    consulta_id?: SortOrder
     realizado_por?: SortOrder
   }
 
@@ -11564,7 +11554,6 @@ export namespace Prisma {
 
   export type RegistroMedicoAvgOrderByAggregateInput = {
     id?: SortOrder
-    consulta_id?: SortOrder
     medico_id?: SortOrder
     paciente_id?: SortOrder
   }
@@ -11593,7 +11582,6 @@ export namespace Prisma {
 
   export type RegistroMedicoSumOrderByAggregateInput = {
     id?: SortOrder
-    consulta_id?: SortOrder
     medico_id?: SortOrder
     paciente_id?: SortOrder
   }
@@ -12568,7 +12556,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaUncheckedCreateWithoutRealizadoPorInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     acao: $Enums.AcaoConsulta
     data_acao: Date | string
     observacao?: string | null
@@ -12674,7 +12662,7 @@ export namespace Prisma {
     OR?: HistoricoConsultaScalarWhereInput[]
     NOT?: HistoricoConsultaScalarWhereInput | HistoricoConsultaScalarWhereInput[]
     id?: IntFilter<"HistoricoConsulta"> | number
-    consulta_id?: IntFilter<"HistoricoConsulta"> | number
+    consulta_id?: StringFilter<"HistoricoConsulta"> | string
     acao?: EnumAcaoConsultaFilter<"HistoricoConsulta"> | $Enums.AcaoConsulta
     realizado_por?: IntFilter<"HistoricoConsulta"> | number
     data_acao?: DateTimeFilter<"HistoricoConsulta"> | Date | string
@@ -12722,6 +12710,7 @@ export namespace Prisma {
   }
 
   export type ConsultaCreateWithoutMedicoInput = {
+    id?: string
     date_time: Date | string
     status: $Enums.ConsultaStatus
     description?: string | null
@@ -12733,7 +12722,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedCreateWithoutMedicoInput = {
-    id?: number
+    id?: string
     paciente_id: number
     date_time: Date | string
     status: $Enums.ConsultaStatus
@@ -12765,7 +12754,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedCreateWithoutMedicoInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     paciente_id: number
     observacoes?: string | null
     diagnostico?: string | null
@@ -12872,7 +12861,7 @@ export namespace Prisma {
     AND?: ConsultaScalarWhereInput | ConsultaScalarWhereInput[]
     OR?: ConsultaScalarWhereInput[]
     NOT?: ConsultaScalarWhereInput | ConsultaScalarWhereInput[]
-    id?: IntFilter<"Consulta"> | number
+    id?: StringFilter<"Consulta"> | string
     paciente_id?: IntFilter<"Consulta"> | number
     medico_id?: IntFilter<"Consulta"> | number
     date_time?: DateTimeFilter<"Consulta"> | Date | string
@@ -12903,7 +12892,7 @@ export namespace Prisma {
     OR?: RegistroMedicoScalarWhereInput[]
     NOT?: RegistroMedicoScalarWhereInput | RegistroMedicoScalarWhereInput[]
     id?: IntFilter<"RegistroMedico"> | number
-    consulta_id?: IntFilter<"RegistroMedico"> | number
+    consulta_id?: StringFilter<"RegistroMedico"> | string
     medico_id?: IntFilter<"RegistroMedico"> | number
     paciente_id?: IntFilter<"RegistroMedico"> | number
     observacoes?: StringNullableFilter<"RegistroMedico"> | string | null
@@ -12980,6 +12969,7 @@ export namespace Prisma {
   }
 
   export type ConsultaCreateWithoutPacienteInput = {
+    id?: string
     date_time: Date | string
     status: $Enums.ConsultaStatus
     description?: string | null
@@ -12991,7 +12981,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedCreateWithoutPacienteInput = {
-    id?: number
+    id?: string
     medico_id: number
     date_time: Date | string
     status: $Enums.ConsultaStatus
@@ -13023,7 +13013,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedCreateWithoutPacienteInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     medico_id: number
     observacoes?: string | null
     diagnostico?: string | null
@@ -13380,6 +13370,7 @@ export namespace Prisma {
   }
 
   export type ConsultaCreateWithoutHistoricoInput = {
+    id?: string
     date_time: Date | string
     status: $Enums.ConsultaStatus
     description?: string | null
@@ -13391,7 +13382,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedCreateWithoutHistoricoInput = {
-    id?: number
+    id?: string
     paciente_id: number
     medico_id: number
     date_time: Date | string
@@ -13459,6 +13450,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUpdateWithoutHistoricoInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13470,7 +13462,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateWithoutHistoricoInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     medico_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13528,6 +13520,7 @@ export namespace Prisma {
   }
 
   export type ConsultaCreateWithoutRegistrosInput = {
+    id?: string
     date_time: Date | string
     status: $Enums.ConsultaStatus
     description?: string | null
@@ -13539,7 +13532,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedCreateWithoutRegistrosInput = {
-    id?: number
+    id?: string
     paciente_id: number
     medico_id: number
     date_time: Date | string
@@ -13605,6 +13598,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUpdateWithoutRegistrosInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13616,7 +13610,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateWithoutRegistrosInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     medico_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13723,7 +13717,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaCreateManyRealizadoPorInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     acao: $Enums.AcaoConsulta
     data_acao: Date | string
     observacao?: string | null
@@ -13738,7 +13732,7 @@ export namespace Prisma {
 
   export type HistoricoConsultaUncheckedUpdateWithoutRealizadoPorInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     acao?: EnumAcaoConsultaFieldUpdateOperationsInput | $Enums.AcaoConsulta
     data_acao?: DateTimeFieldUpdateOperationsInput | Date | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13746,14 +13740,14 @@ export namespace Prisma {
 
   export type HistoricoConsultaUncheckedUpdateManyWithoutRealizadoPorInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     acao?: EnumAcaoConsultaFieldUpdateOperationsInput | $Enums.AcaoConsulta
     data_acao?: DateTimeFieldUpdateOperationsInput | Date | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConsultaCreateManyMedicoInput = {
-    id?: number
+    id?: string
     paciente_id: number
     date_time: Date | string
     status: $Enums.ConsultaStatus
@@ -13764,7 +13758,7 @@ export namespace Prisma {
 
   export type RegistroMedicoCreateManyMedicoInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     paciente_id: number
     observacoes?: string | null
     diagnostico?: string | null
@@ -13780,6 +13774,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUpdateWithoutMedicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13791,7 +13786,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateWithoutMedicoInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
@@ -13803,7 +13798,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateManyWithoutMedicoInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
@@ -13823,7 +13818,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedUpdateWithoutMedicoInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13833,7 +13828,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedUpdateManyWithoutMedicoInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     paciente_id?: IntFieldUpdateOperationsInput | number
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13862,7 +13857,7 @@ export namespace Prisma {
   }
 
   export type ConsultaCreateManyPacienteInput = {
-    id?: number
+    id?: string
     medico_id: number
     date_time: Date | string
     status: $Enums.ConsultaStatus
@@ -13873,7 +13868,7 @@ export namespace Prisma {
 
   export type RegistroMedicoCreateManyPacienteInput = {
     id?: number
-    consulta_id: number
+    consulta_id: string
     medico_id: number
     observacoes?: string | null
     diagnostico?: string | null
@@ -13882,6 +13877,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUpdateWithoutPacienteInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13893,7 +13889,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateWithoutPacienteInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     medico_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
@@ -13905,7 +13901,7 @@ export namespace Prisma {
   }
 
   export type ConsultaUncheckedUpdateManyWithoutPacienteInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     medico_id?: IntFieldUpdateOperationsInput | number
     date_time?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumConsultaStatusFieldUpdateOperationsInput | $Enums.ConsultaStatus
@@ -13925,7 +13921,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedUpdateWithoutPacienteInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     medico_id?: IntFieldUpdateOperationsInput | number
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13935,7 +13931,7 @@ export namespace Prisma {
 
   export type RegistroMedicoUncheckedUpdateManyWithoutPacienteInput = {
     id?: IntFieldUpdateOperationsInput | number
-    consulta_id?: IntFieldUpdateOperationsInput | number
+    consulta_id?: StringFieldUpdateOperationsInput | string
     medico_id?: IntFieldUpdateOperationsInput | number
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null

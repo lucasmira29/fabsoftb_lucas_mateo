@@ -215,14 +215,17 @@ exports.Prisma.PacienteOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.ConsultaOrderByRelevanceFieldEnum = {
+  id: 'id',
   description: 'description'
 };
 
 exports.Prisma.HistoricoConsultaOrderByRelevanceFieldEnum = {
+  consulta_id: 'consulta_id',
   observacao: 'observacao'
 };
 
 exports.Prisma.RegistroMedicoOrderByRelevanceFieldEnum = {
+  consulta_id: 'consulta_id',
   observacoes: 'observacoes',
   diagnostico: 'diagnostico',
   tratamento: 'tratamento'
