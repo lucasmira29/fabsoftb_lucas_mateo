@@ -36,7 +36,7 @@ class consultaController {
   static async listarPorId(req, res) {
     try {
       const { id } = req.params;
-      const consulta = await consultaService.listarConsultaPorId(Number(id));
+      const consulta = await consultaService.listarConsultaPorId(id);
       if (!consulta) return res.status(404).json({ message: 'Consulta não encontrada' });
       res.status(200).json(consulta);
     } catch (error) {
@@ -47,7 +47,7 @@ class consultaController {
   static async listarPorPaciente(req, res) {
     try {
       const { id } = req.params;
-      const consultas = await consultaService.listarPorPaciente(Number(id));
+      const consultas = await consultaService.listarPorPaciente(id);
       res.status(200).json(consultas);
     } catch (error) {
       res.status(500).json({ message: 'Erro ao listar consultas do paciente', error });
@@ -57,7 +57,7 @@ class consultaController {
   static async listarPorMedico(req, res) {
     try {
       const { id } = req.params;
-      const consultas = await consultaService.listarPorMedico(Number(id));
+      const consultas = await consultaService.listarPorMedico(id);
       res.status(200).json(consultas);
     } catch (error) {
       res.status(500).json({ message: 'Erro ao listar consultas do médico', error });
@@ -68,7 +68,7 @@ class consultaController {
     try {
       const { id } = req.params;
       const data = req.body;
-      const consulta = await consultaService.atualizarConsulta(Number(id), data);
+      const consulta = await consultaService.atualizarConsulta(id, data);
       res.status(200).json({ message: 'Consulta atualizada', consulta });
     } catch (error) {
       res.status(500).json({ message: 'Erro ao atualizar consulta', error });
@@ -78,7 +78,7 @@ class consultaController {
   static async cancelar(req, res) {
     try {
       const { id } = req.params;
-      await consultaService.cancelarConsulta(Number(id));
+      await consultaService.cancelarConsulta(id);
       res.status(200).json({ message: 'Consulta cancelada com sucesso' });
     } catch (error) {
       res.status(500).json({ message: 'Erro ao cancelar consulta', error });
