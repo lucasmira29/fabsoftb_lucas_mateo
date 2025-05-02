@@ -26,18 +26,29 @@ class medicoService {
   }
 
 
-  static async getAllMedicos() {
+  static async getAllMedicos(filtros) {
+    const medicoWhere = {};
+    const userWhere = { deleted_at: null };
+  
+    if (filtros.specialty) {
+      medicoWhere.specialty = filtros.specialty;
+    }
+  
+    if (filtros.name) userWhere.name = filtros.name;
+    if (filtros.email) userWhere.email = filtros.email;
+  
     return await prisma.medico.findMany({
       where: {
+        ...medicoWhere,
         user: {
-          deleted_at: null,
+          ...userWhere,
         },
       },
       include: {
         user: true,
       },
     });
-  } 
+  }  
 
 
   static async getMedicoById(id) {

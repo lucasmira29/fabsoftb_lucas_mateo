@@ -10,7 +10,7 @@ router.put('/:id', consultaController.atualizar);
 router.delete('/:id', consultaController.cancelar);
 
 // extras
-// router.get('/paciente/:id', consultaController.listarPorPaciente);
-// router.get('/medico/:id', consultaController.listarPorMedico);
+router.get('/paciente/:id', consultaController.listarPorPaciente);
+router.get('/medico/:id', consultaController.listarPorMedico);
 
 export default router;

@@ -23,10 +23,11 @@ class pacienteService {
     });
   }
 
-  static async getAllPacientes() {
+  static async getAllPacientes(filtros) {
     return await prisma.paciente.findMany({
       where: {
         user : {
+          ...filtros,    
           deleted_at: null,
         },
       },

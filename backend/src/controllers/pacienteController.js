@@ -59,9 +59,10 @@ class pacienteController {
   }
 
   static async listarPacientes(req, res) {
+    const filtros = { ...req.query };  
+    
     try {
-      const pacientes = await pacienteService.getAllPacientes();
-
+      const pacientes = await pacienteService.getAllPacientes(filtros);
       return res.status(200).json(pacientes);
     } catch (error) {
       console.error(error);

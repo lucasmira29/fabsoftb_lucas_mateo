@@ -52,8 +52,10 @@ class medicoController {
   }
   
   static async listarMedicos(req, res) {
+    const filtros = { ...req.query };
+    
     try {
-      const medico = await medicoService.getAllMedicos();
+      const medico = await medicoService.getAllMedicos(filtros);
 
       res.status(200).json(medico);
     } catch (error) {

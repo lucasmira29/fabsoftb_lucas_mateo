@@ -47,7 +47,7 @@ class consultaController {
   static async listarPorPaciente(req, res) {
     try {
       const { id } = req.params;
-      const consultas = await consultaService.listarPorPaciente(id);
+      const consultas = await consultaService.listarPorPaciente(Number(id));
       res.status(200).json(consultas);
     } catch (error) {
       res.status(500).json({ message: 'Erro ao listar consultas do paciente', error });
@@ -57,7 +57,7 @@ class consultaController {
   static async listarPorMedico(req, res) {
     try {
       const { id } = req.params;
-      const consultas = await consultaService.listarPorMedico(id);
+      const consultas = await consultaService.listarPorMedico(Number(id));
       res.status(200).json(consultas);
     } catch (error) {
       res.status(500).json({ message: 'Erro ao listar consultas do médico', error });
