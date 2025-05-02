@@ -5,8 +5,23 @@ class consultaService {
     return await prisma.consulta.create({ data });
   }
 
-  static async listarConsultas() {
+  static async listarConsultas(filtros = {}) {
+    const where = {};
+  
+    if (filtros.data) {
+      where.data = new Date(filtros.data);
+    }
+  
+    if (filtros.pacienteId) {
+      where.paciente_id = Number(filtros.pacienteId);
+    }
+  
+    if (filtros.medicoId) {
+      where.medico_id = Number(filtros.medicoId);
+    }
+  
     return await prisma.consulta.findMany({
+      where,
       include: {
         paciente: { include: { user: true } },
         medico: { include: { user: true } },

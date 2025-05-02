@@ -25,14 +25,17 @@ class consultaController {
   }
 
   static async listarTodas(req, res) {
+    const filtros = req.query;
+  
     try {
-      const consultas = await consultaService.listarConsultas();
+      const consultas = await consultaService.listarConsultas(filtros);
+
       res.status(200).json(consultas);
     } catch (error) {
       res.status(500).json({ message: 'Erro ao listar consultas', error });
     }
   }
-
+  
   static async listarPorId(req, res) {
     try {
       const { id } = req.params;
@@ -41,26 +44,6 @@ class consultaController {
       res.status(200).json(consulta);
     } catch (error) {
       res.status(500).json({ message: 'Erro ao buscar consulta', error });
-    }
-  }
-
-  static async listarPorPaciente(req, res) {
-    try {
-      const { id } = req.params;
-      const consultas = await consultaService.listarPorPaciente(Number(id));
-      res.status(200).json(consultas);
-    } catch (error) {
-      res.status(500).json({ message: 'Erro ao listar consultas do paciente', error });
-    }
-  }
-
-  static async listarPorMedico(req, res) {
-    try {
-      const { id } = req.params;
-      const consultas = await consultaService.listarPorMedico(Number(id));
-      res.status(200).json(consultas);
-    } catch (error) {
-      res.status(500).json({ message: 'Erro ao listar consultas do médico', error });
     }
   }
 
