@@ -1,8 +1,8 @@
-import { format, parseISO } from 'date-fns';
+import { format, parse, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export function formatDate(data, format = "dd 'de' MMMM 'de' yyyy") {
-  return format(data, format, { locale: ptBR });
+export function formatDate(data, fmt = "dd 'de' MMMM 'de' yyyy") {
+  return format(data, fmt, { locale: ptBR });
 }
 
 export function formatDateTime(data) {
@@ -12,4 +12,8 @@ export function formatDateTime(data) {
 export function formatISO(dataISO) {
   const data = parseISO(dataISO);
   return format(data, "dd/MM/yyyy", { locale: ptBR });
+}
+
+export function parseDateTimeToDate(dateStr) {
+  return parse(dateStr, "dd/MM/yyyy HH:mm", new Date());
 }

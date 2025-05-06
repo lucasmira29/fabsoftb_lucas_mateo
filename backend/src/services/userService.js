@@ -23,7 +23,15 @@ class userService {
       where: { id },
     });
   }
+
+  static async getUserByEmail(email) {
+    return await prisma.user.findUnique({
+      where: { email },
+    });
+  }
 }
+
+
 
 
 export default userService;
