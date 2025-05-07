@@ -255,7 +255,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\A65-ION\\Documents\\fabsoftb_lucas_mateo\\backend\\src\\generated\\prisma",
+      "value": "C:\\Users\\mateo\\OneDrive - Univille\\Documentos\\GitHub\\fabsoftb_lucas_mateo\\backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -266,10 +266,18 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "windows"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\A65-ION\\Documents\\fabsoftb_lucas_mateo\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\mateo\\OneDrive - Univille\\Documentos\\GitHub\\fabsoftb_lucas_mateo\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -283,16 +291,17 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mysql://root:9943@localhost:3306/fabsoft"
+        "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum Role {\n  admin\n  medico\n  recepcionista\n  paciente\n}\n\nenum ConsultaStatus {\n  agendado\n  cancelado\n  realizado\n}\n\nenum DiaSemana {\n  domingo\n  segunda\n  terca\n  quarta\n  quinta\n  sexta\n  sabado\n}\n\nenum AcaoConsulta {\n  agendado\n  cancelado\n  reagendado\n}\n\nmodel User {\n  id          Int       @id @default(autoincrement())\n  name        String    @db.VarChar(100)\n  document    String    @unique @db.VarChar(11)\n  birthdate   DateTime  @db.Date\n  phone       String?   @db.VarChar(15)\n  postal_code String    @db.VarChar(8)\n  email       String    @unique @db.VarChar(255)\n  password    String    @db.VarChar(255)\n  role        Role\n  created_at  DateTime  @default(now())\n  updated_at  DateTime  @updatedAt\n  deleted_at  DateTime?\n\n  // relations\n  Medico         Medico?\n  Paciente       Paciente?\n  Recepcionista  Recepcionista?\n  historicoAcoes HistoricoConsulta[] @relation(\"HistoricoAcoes\")\n\n  @@map(\"users\")\n}\n\nmodel Medico {\n  id        Int              @id\n  specialty String           @db.VarChar(100)\n  user      User             @relation(fields: [id], references: [id], onDelete: Cascade)\n  consultas Consulta[]\n  registros RegistroMedico[]\n  horarios  HorarioMedico[]\n\n  @@map(\"medicos\")\n}\n\nmodel Paciente {\n  id        Int              @id\n  history   String?\n  allergies String?\n  user      User             @relation(fields: [id], references: [id], onDelete: Cascade)\n  consultas Consulta[]\n  registros RegistroMedico[]\n\n  @@map(\"pacientes\")\n}\n\nmodel Recepcionista {\n  id   Int  @id\n  user User @relation(fields: [id], references: [id], onDelete: Cascade)\n\n  @@map(\"recepcionistas\")\n}\n\nmodel Consulta {\n  id          String         @id @default(uuid())\n  paciente_id Int\n  medico_id   Int\n  date_time   DateTime\n  status      ConsultaStatus\n  description String?\n  created_at  DateTime       @default(now())\n  updated_at  DateTime       @updatedAt\n\n  paciente  Paciente            @relation(fields: [paciente_id], references: [id], onDelete: Cascade)\n  medico    Medico              @relation(fields: [medico_id], references: [id], onDelete: Cascade)\n  historico HistoricoConsulta[]\n  registros RegistroMedico[]\n\n  @@map(\"consultas\")\n}\n\nmodel HistoricoConsulta {\n  id            Int          @id @default(autoincrement())\n  consulta_id   String\n  acao          AcaoConsulta\n  realizado_por Int\n  data_acao     DateTime\n  observacao    String?\n\n  consulta     Consulta @relation(fields: [consulta_id], references: [id])\n  realizadoPor User     @relation(\"HistoricoAcoes\", fields: [realizado_por], references: [id])\n\n  @@map(\"historicos_consultas\")\n}\n\nmodel RegistroMedico {\n  id          Int      @id @default(autoincrement())\n  consulta_id String\n  medico_id   Int\n  paciente_id Int\n  observacoes String?\n  diagnostico String?\n  tratamento  String?\n  created_at  DateTime @default(now())\n\n  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)\n  medico   Medico   @relation(fields: [medico_id], references: [id], onDelete: Cascade)\n  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)\n\n  @@map(\"registros_medicos\")\n}\n\nmodel HorarioMedico {\n  id          Int       @id @default(autoincrement())\n  medico_id   Int\n  day_of_week DiaSemana\n  start_time  DateTime  @db.Time(0)\n  end_time    DateTime  @db.Time(0)\n\n  medico Medico @relation(fields: [medico_id], references: [id], onDelete: Cascade)\n\n  @@map(\"horarios_medicos\")\n}\n",
-  "inlineSchemaHash": "80a84f1db8031ed321be72a2fa686617c927a59c6c20ca678d6b9f6998046aa8",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"windows\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum Role {\n  admin\n  medico\n  recepcionista\n  paciente\n}\n\nenum ConsultaStatus {\n  agendado\n  cancelado\n  realizado\n}\n\nenum DiaSemana {\n  domingo\n  segunda\n  terca\n  quarta\n  quinta\n  sexta\n  sabado\n}\n\nenum AcaoConsulta {\n  agendado\n  cancelado\n  reagendado\n}\n\nmodel User {\n  id          Int       @id @default(autoincrement())\n  name        String    @db.VarChar(100)\n  document    String    @unique @db.VarChar(11)\n  birthdate   DateTime  @db.Date\n  phone       String?   @db.VarChar(15)\n  postal_code String    @db.VarChar(8)\n  email       String    @unique @db.VarChar(255)\n  password    String    @db.VarChar(255)\n  role        Role\n  created_at  DateTime  @default(now())\n  updated_at  DateTime  @updatedAt\n  deleted_at  DateTime?\n\n  // relations\n  Medico         Medico?\n  Paciente       Paciente?\n  Recepcionista  Recepcionista?\n  historicoAcoes HistoricoConsulta[] @relation(\"HistoricoAcoes\")\n\n  @@map(\"users\")\n}\n\nmodel Medico {\n  id        Int              @id\n  specialty String           @db.VarChar(100)\n  user      User             @relation(fields: [id], references: [id], onDelete: Cascade)\n  consultas Consulta[]\n  registros RegistroMedico[]\n  horarios  HorarioMedico[]\n\n  @@map(\"medicos\")\n}\n\nmodel Paciente {\n  id        Int              @id\n  history   String?\n  allergies String?\n  user      User             @relation(fields: [id], references: [id], onDelete: Cascade)\n  consultas Consulta[]\n  registros RegistroMedico[]\n\n  @@map(\"pacientes\")\n}\n\nmodel Recepcionista {\n  id   Int  @id\n  user User @relation(fields: [id], references: [id], onDelete: Cascade)\n\n  @@map(\"recepcionistas\")\n}\n\nmodel Consulta {\n  id          String         @id @default(uuid())\n  paciente_id Int\n  medico_id   Int\n  date_time   DateTime\n  status      ConsultaStatus\n  description String?\n  created_at  DateTime       @default(now())\n  updated_at  DateTime       @updatedAt\n\n  paciente  Paciente            @relation(fields: [paciente_id], references: [id], onDelete: Cascade)\n  medico    Medico              @relation(fields: [medico_id], references: [id], onDelete: Cascade)\n  historico HistoricoConsulta[]\n  registros RegistroMedico[]\n\n  @@map(\"consultas\")\n}\n\nmodel HistoricoConsulta {\n  id            Int          @id @default(autoincrement())\n  consulta_id   String\n  acao          AcaoConsulta\n  realizado_por Int\n  data_acao     DateTime\n  observacao    String?\n\n  consulta     Consulta @relation(fields: [consulta_id], references: [id])\n  realizadoPor User     @relation(\"HistoricoAcoes\", fields: [realizado_por], references: [id])\n\n  @@map(\"historicos_consultas\")\n}\n\nmodel RegistroMedico {\n  id          Int      @id @default(autoincrement())\n  consulta_id String\n  medico_id   Int\n  paciente_id Int\n  observacoes String?\n  diagnostico String?\n  tratamento  String?\n  created_at  DateTime @default(now())\n\n  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)\n  medico   Medico   @relation(fields: [medico_id], references: [id], onDelete: Cascade)\n  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)\n\n  @@map(\"registros_medicos\")\n}\n\nmodel HorarioMedico {\n  id          Int       @id @default(autoincrement())\n  medico_id   Int\n  day_of_week DiaSemana\n  start_time  DateTime  @db.Time(0)\n  end_time    DateTime  @db.Time(0)\n\n  medico Medico @relation(fields: [medico_id], references: [id], onDelete: Cascade)\n\n  @@map(\"horarios_medicos\")\n}\n",
+  "inlineSchemaHash": "4ac0f519407730373b559dca93a5a2c58ffbb971803d5cb4c4d6697066c91090",
   "copyEngine": true
 }
 config.dirname = '/'
