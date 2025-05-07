@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `document` VARCHAR(11) NOT NULL,
@@ -13,23 +13,21 @@ CREATE TABLE `User` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `User_document_key`(`document`),
-    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `users_document_key`(`document`),
+    UNIQUE INDEX `users_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Medico` (
+CREATE TABLE `medicos` (
     `id` INTEGER NOT NULL,
-    `crm` VARCHAR(20) NOT NULL,
     `specialty` VARCHAR(100) NOT NULL,
 
-    UNIQUE INDEX `Medico_crm_key`(`crm`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Paciente` (
+CREATE TABLE `pacientes` (
     `id` INTEGER NOT NULL,
     `history` VARCHAR(191) NULL,
     `allergies` VARCHAR(191) NULL,
@@ -38,15 +36,15 @@ CREATE TABLE `Paciente` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Recepcionista` (
+CREATE TABLE `recepcionistas` (
     `id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Consulta` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE `consultas` (
+    `id` VARCHAR(191) NOT NULL,
     `paciente_id` INTEGER NOT NULL,
     `medico_id` INTEGER NOT NULL,
     `date_time` DATETIME(3) NOT NULL,
@@ -59,9 +57,9 @@ CREATE TABLE `Consulta` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `HistoricoConsulta` (
+CREATE TABLE `historicos_consultas` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `consulta_id` INTEGER NOT NULL,
+    `consulta_id` VARCHAR(191) NOT NULL,
     `acao` ENUM('agendado', 'cancelado', 'reagendado') NOT NULL,
     `realizado_por` INTEGER NOT NULL,
     `data_acao` DATETIME(3) NOT NULL,
@@ -71,9 +69,9 @@ CREATE TABLE `HistoricoConsulta` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `RegistroMedico` (
+CREATE TABLE `registros_medicos` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `consulta_id` INTEGER NOT NULL,
+    `consulta_id` VARCHAR(191) NOT NULL,
     `medico_id` INTEGER NOT NULL,
     `paciente_id` INTEGER NOT NULL,
     `observacoes` VARCHAR(191) NULL,
@@ -85,7 +83,7 @@ CREATE TABLE `RegistroMedico` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `HorarioMedico` (
+CREATE TABLE `horarios_medicos` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `medico_id` INTEGER NOT NULL,
     `day_of_week` ENUM('domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado') NOT NULL,
@@ -96,34 +94,34 @@ CREATE TABLE `HorarioMedico` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Medico` ADD CONSTRAINT `Medico_id_fkey` FOREIGN KEY (`id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `medicos` ADD CONSTRAINT `medicos_id_fkey` FOREIGN KEY (`id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Paciente` ADD CONSTRAINT `Paciente_id_fkey` FOREIGN KEY (`id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `pacientes` ADD CONSTRAINT `pacientes_id_fkey` FOREIGN KEY (`id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Recepcionista` ADD CONSTRAINT `Recepcionista_id_fkey` FOREIGN KEY (`id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `recepcionistas` ADD CONSTRAINT `recepcionistas_id_fkey` FOREIGN KEY (`id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Consulta` ADD CONSTRAINT `Consulta_paciente_id_fkey` FOREIGN KEY (`paciente_id`) REFERENCES `Paciente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `consultas` ADD CONSTRAINT `consultas_paciente_id_fkey` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Consulta` ADD CONSTRAINT `Consulta_medico_id_fkey` FOREIGN KEY (`medico_id`) REFERENCES `Medico`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `consultas` ADD CONSTRAINT `consultas_medico_id_fkey` FOREIGN KEY (`medico_id`) REFERENCES `medicos`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `HistoricoConsulta` ADD CONSTRAINT `HistoricoConsulta_consulta_id_fkey` FOREIGN KEY (`consulta_id`) REFERENCES `Consulta`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `historicos_consultas` ADD CONSTRAINT `historicos_consultas_consulta_id_fkey` FOREIGN KEY (`consulta_id`) REFERENCES `consultas`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `HistoricoConsulta` ADD CONSTRAINT `HistoricoConsulta_realizado_por_fkey` FOREIGN KEY (`realizado_por`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `historicos_consultas` ADD CONSTRAINT `historicos_consultas_realizado_por_fkey` FOREIGN KEY (`realizado_por`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RegistroMedico` ADD CONSTRAINT `RegistroMedico_consulta_id_fkey` FOREIGN KEY (`consulta_id`) REFERENCES `Consulta`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `registros_medicos` ADD CONSTRAINT `registros_medicos_consulta_id_fkey` FOREIGN KEY (`consulta_id`) REFERENCES `consultas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RegistroMedico` ADD CONSTRAINT `RegistroMedico_medico_id_fkey` FOREIGN KEY (`medico_id`) REFERENCES `Medico`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `registros_medicos` ADD CONSTRAINT `registros_medicos_medico_id_fkey` FOREIGN KEY (`medico_id`) REFERENCES `medicos`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RegistroMedico` ADD CONSTRAINT `RegistroMedico_paciente_id_fkey` FOREIGN KEY (`paciente_id`) REFERENCES `Paciente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `registros_medicos` ADD CONSTRAINT `registros_medicos_paciente_id_fkey` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `HorarioMedico` ADD CONSTRAINT `HorarioMedico_medico_id_fkey` FOREIGN KEY (`medico_id`) REFERENCES `Medico`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `horarios_medicos` ADD CONSTRAINT `horarios_medicos_medico_id_fkey` FOREIGN KEY (`medico_id`) REFERENCES `medicos`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
