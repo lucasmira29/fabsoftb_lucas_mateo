@@ -1,77 +1,127 @@
-# Fábrica de Software I 
+# Fábrica de Software I
 
-## Nome da equipe
-- Lucas de Mira
-- Mateo Motta
+## 👨‍💻 Equipe
 
-## Proposta de Projeto
+* Lucas de Mira
+* Mateo Motta
 
-### Sistema de Agendamento de Consultas Dermatológicas
+---
 
-#### Funcionalidades:
+## 💡 Proposta do Projeto
 
-1. **Cadastro de Pacientes:**
-   - Registro de dados (nome, data de nascimento, telefone, etc.) e criação de histórico médico.
-   
-2. **Cadastro de Profissionais:**
-   - Cadastro de recepcionistas e médicos dermatologistas com horários de atendimento e especialidades.
+Sistema para gerenciar o agendamento de consultas dermatológicas com funcionalidades administrativas e assistenciais.
 
-3. **Agendamento de Consultas:**
-   - Interface para agendamento com seleção de médico, data e horário disponível.
+### Funcionalidades Principais
 
-4. **Visualização de Consultas Agendadas:**
-   - Consulta de agendamentos futuros e opção de cancelamento ou reagendamento em um período de até 48 horas antes da data marcada.
+1. Cadastro de Pacientes
+2. Cadastro de Profissionais (médicos e recepcionistas)
+3. Agendamento de Consultas
+4. Visualização de Consultas Agendadas
+5. Cancelamento e Reagendamento de Consultas
+6. Notificações e Lembretes por E-mail
+7. Registro de Consultas e Histórico Médico
+8. Pesquisa e Filtro de Consultas
+9. Login e Autenticação com Permissões
+10. Painel Administrativo
 
-5. **Notificações e Lembretes:**
-   - Envio de lembretes automáticos via email de consultas para pacientes e médicos.
+---
 
-6. **Relatórios e Histórico Médico:**
-   - Adicionar registro de consultas, observações e diagnósticos no cadastro do paciente.
+## 👤 Histórias de Usuário
 
-7. **Pesquisa e Filtro de Consultas:**
-   - Busca de consultas por data, paciente, ou médico.
+1. Cadastro de Pacientes
 
-8. **Painel Administrativo:**
-   - Gerenciamento de pacientes, médicos e horários de consulta.
+   * Como Atendente, desejo registrar dados dos pacientes para acompanhamento médico.
 
-9. **Login e Autenticação:**
-   - Sistema de login com permissões de acesso (médicos, recepcionistas e administradores).
+2. Painel Administrativo
 
+   * Como Administrador, desejo gerenciar cadastros e horários para manter a organização.
 
-### **Histórias de Usuário**  
+3. Agendamento de Consultas
 
-1. **Cadastro de Pacientes**  
-   - Como um **Atendente**, eu gostaria de registrar os dados do paciente, incluindo nome, data de nascimento, telefone, e-mail e histórico médico para melhor acompanhamento.  
+   * Como Paciente, desejo agendar uma consulta com um médico em data e horário disponíveis.
 
-2. **Painel Administrativo**  
-   - Como um **Administrador**, eu gostaria de gerenciar os cadastros de pacientes, médicos e horários de consulta para manter o sistema organizado.  
+4. Visualização de Consultas Agendadas
 
-3. **Agendamento de Consultas**  
-   - Como um **Paciente**, eu gostaria de agendar uma consulta com o atendente escolhendo um médico, uma data e um horário disponível para facilitar meu atendimento.  
+   * Como Paciente ou Médico, desejo visualizar minhas consultas para me organizar.
 
-4. **Visualização de Consultas Agendadas**  
-   - Como um **Paciente**, eu gostaria de visualizar minhas consultas agendadas por email.  
-   - Como um **Médico**, eu gostaria de visualizar minha agenda de consultas para organizar melhor meus atendimentos.  
+5. Cancelamento e Reagendamento
 
-5. **Cancelamento e Reagendamento**  
-   - Como um **Paciente**, eu gostaria de cancelar ou reagendar uma consulta com antecedência para evitar conflitos de horário.  
+   * Como Paciente, desejo cancelar ou reagendar consultas com até 48h de antecedência.
 
-6. **Notificações e Lembretes**  
-   - Como um **Paciente**, eu gostaria de receber lembretes automáticos sobre minhas consultas para não esquecer do compromisso.  
-   - Como um **Médico**, eu gostaria de receber notificações sobre novos agendamentos ou cancelamentos na minha agenda para me manter atualizado.  
+6. Notificações e Lembretes
 
-7. **Registro de Consultas e Histórico Médico**  
-   - Como um **Médico**, eu gostaria de registrar observações, diagnósticos e tratamentos durante a consulta para manter um histórico médico atualizado do paciente.  
+   * Como Paciente ou Médico, desejo receber lembretes automáticos das consultas.
 
-8. **Pesquisa e Filtro de Consultas**  
-   - Como um **Atendente**, eu gostaria de buscar consultas por data, paciente ou médico para facilitar a gestão do sistema.  
+7. Registro de Consultas e Histórico Médico
 
-9. **Login e Autenticação**  
-   - Como um **Usuário**, eu gostaria de acessar o sistema com login e senha para garantir segurança e controle de acesso.  
-   - Como um **Administrador**, eu gostaria de definir diferentes permissões de acesso para médicos e atendentes para garantir que cada um tenha acesso apenas às funcionalidades necessárias.
+   * Como Médico, desejo registrar observações e diagnósticos no histórico do paciente.
 
-### Modelo ER
+8. Pesquisa e Filtro de Consultas
+
+   * Como Atendente, desejo buscar consultas por data, médico ou paciente.
+
+9. Login e Autenticação
+
+   * Como Usuário, desejo acessar com login/senha e permissões específicas por função.
+
+---
+
+## 🗂️ Modelo ER
 
 <div style="text-align: center;">
-  <img src="./database_diagram.png" width=800 alt="Diagrama do banco de dados">
+  <img src="./database_diagram.png" width="800" alt="Diagrama do banco de dados">
 </div>
+
+---
+
+## ⚙️ Como Rodar o Projeto
+
+### ▶️ Ambiente Local
+
+1. Acesse a pasta do backend:
+
+   ```bash
+   cd backend
+   ```
+
+2. Instale as dependências:
+
+   ```bash
+   npm install
+   ```
+
+3. Crie um arquivo .env com base no .envExample:
+
+   ```
+   DATABASE_URL=mysql://USER:PASSWORD@HOST:PORT/DATABASE
+   ```
+
+4. Execute as migrações:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Inicie o servidor:
+
+   ```bash
+   npm start
+   ```
+
+---
+
+### 🐳 Usando Docker
+
+1. Acesse a pasta do backend:
+
+   ```bash
+   cd backend
+   ```
+
+2. Execute o projeto com Docker Compose:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+3. Acesse a aplicação em: [http://localhost:3000](http://localhost:3000)
