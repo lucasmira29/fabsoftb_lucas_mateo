@@ -21,7 +21,9 @@ services:
     ports:
       - "3000:3000"
     command: >
-      sh -c "npx prisma migrate deploy &&
+      sh -c "until nc -z -v -w30 db 3306; do echo 'Aguardando o banco de dados...'; sleep 5; done &&
+             npx prisma generate &&
+             npx prisma migrate deploy &&
              npm start"
     volumes:
       - .:/usr/src/app
