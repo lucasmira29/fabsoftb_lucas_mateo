@@ -26,13 +26,26 @@ class pacienteService {
   static async getAllPacientes(filtros) {
     return await prisma.paciente.findMany({
       where: {
-        user : {
-          ...filtros,    
+        user: {
+          ...filtros,
           deleted_at: null,
         },
       },
-      include: {
-        user: true,
+      select: {
+        id: true,
+        user: {
+          select: {
+            name: true,
+            document: true,
+            birthdate: true,
+            phone: true,
+            postal_code: true,
+            email: true,
+            role: true,
+          },
+        },
+        history: true,
+        allergies: true,
       },
     });
   }
@@ -40,7 +53,22 @@ class pacienteService {
   static async getPacienteById(id) {
     return await prisma.paciente.findUnique({
       where: { id },
-      include: { user: true },
+      select: {
+        id: true,
+        user: {
+          select: {
+            name: true,
+            document: true,
+            birthdate: true,
+            phone: true,
+            postal_code: true,
+            email: true,
+            role: true,
+          },
+        },
+        history: true,
+        allergies: true,
+      },
     });
   }
 

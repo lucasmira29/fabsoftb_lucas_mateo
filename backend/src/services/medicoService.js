@@ -3,7 +3,7 @@ import { hashPassword } from "../utils/hash.js";
 
 
 class medicoService {
-  
+
   static async createMedico(userData, specialty) {
     return prisma.$transaction(async (tx) => {
       const hashedPassword = await hashPassword(userData.password);
@@ -29,14 +29,14 @@ class medicoService {
   static async getAllMedicos(filtros) {
     const medicoWhere = {};
     const userWhere = { deleted_at: null };
-  
+
     if (filtros.specialty) {
       medicoWhere.specialty = filtros.specialty;
     }
-  
+
     if (filtros.name) userWhere.name = filtros.name;
     if (filtros.email) userWhere.email = filtros.email;
-  
+
     return await prisma.medico.findMany({
       where: {
         ...medicoWhere,
@@ -44,20 +44,60 @@ class medicoService {
           ...userWhere,
         },
       },
-      include: {
-        user: true,
+      select: {
+        id: true,
+        specialty: true,
+        user: {
+          select: {
+            name: true,
+            document: true,
+            birthdate: true,
+            phone: true,
+            postal_code: true,
+            email: true,
+            role: true,
+          },
+        },
+        horarios: {
+          select: {
+            day_of_week: true,
+            start_time: true,
+            end_time: true,
+          },
+        },
       },
     });
-  }  
+  }
 
 
   static async getMedicoById(id) {
     return await prisma.medico.findUnique({
       where: { id },
-      include: { user: true },
+      select: {
+        id: true,
+        specialty: true,
+        user: {
+          select: {
+            name: true,
+            document: true,
+            birthdate: true,
+            phone: true,
+            postal_code: true,
+            email: true,
+            role: true,
+          },
+        },
+        horarios: {
+          select: {
+            day_of_week: true,
+            start_time: true,
+            end_time: true,
+          },
+        },
+      },
     });
   }
-
+  
   static async updateMedico(id, newData) {
     return await prisma.user.update({
       where: { id },

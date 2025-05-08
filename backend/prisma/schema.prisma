@@ -91,7 +91,7 @@ model Recepcionista {
 }
 
 model Consulta {
-  id          String           @id @default(uuid())
+  id          String           @id @default(cuid())
   paciente_id Int
   medico_id   Int
   date_time   DateTime
@@ -109,7 +109,7 @@ model Consulta {
 }
 
 model HistoricoConsulta {
-  id            Int           @id @default(autoincrement())
+  id            String           @id @default(cuid())
   consulta_id   String
   acao          AcaoConsulta
   realizado_por Int
@@ -123,7 +123,7 @@ model HistoricoConsulta {
 }
 
 model RegistroMedico {
-  id          Int     @id @default(autoincrement())
+  id          String     @id @default(cuid())
   consulta_id String
   medico_id   Int
   paciente_id Int

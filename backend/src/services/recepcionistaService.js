@@ -20,7 +20,19 @@ class recepcionistaService {
         },
       });
 
-      return { user, recepcionista };
+      return {
+        recepcionista,
+        user: {
+          id: user.id,
+          name: user.name,
+          document: user.document,
+          birthdate: user.birthdate,
+          phone: user.phone,
+          postal_code: user.postal_code,
+          email: user.email,
+          role: user.role,
+        },
+      };
     });
   }
 
@@ -31,8 +43,19 @@ class recepcionistaService {
           deleted_at: null,
         },
       },
-      include: {
-        user: true,
+      select: {
+        id: true,
+        user: {
+          select: {
+            name: true,
+            document: true,
+            birthdate: true,
+            phone: true,
+            postal_code: true,
+            email: true,
+            role: true,
+          },
+        },
       },
     });
   }
@@ -40,7 +63,20 @@ class recepcionistaService {
   static async getRecepcionistaById(id) {
     return await prisma.recepcionista.findUnique({
       where: { id },
-      include: { user: true },
+      select: {
+        id: true,
+        user: {
+          select: {
+            name: true,
+            document: true,
+            birthdate: true,
+            phone: true,
+            postal_code: true,
+            email: true,
+            role: true,
+          },
+        },
+      },
     });
   }
 
