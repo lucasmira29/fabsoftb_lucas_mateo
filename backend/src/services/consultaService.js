@@ -8,16 +8,39 @@ class consultaService {
   static async listarConsultas(filtros = {}) {
     const where = {};
   
+    // filtro por data exata
     if (filtros.data) {
-      where.data = new Date(filtros.data);
+      const data = new Date(filtros.data);
+      const diaSeguinte = new Date(data);
+      diaSeguinte.setDate(data.getDate() + 1);
+  
+      where.date_time = {
+        gte: data,
+        lt: diaSeguinte,
+      };
     }
   
+    // filtro por intervalo de datas
+    if (filtros.dataInicio || filtros.dataFim) {
+      where.date_time = {
+        ...(filtros.dataInicio && { gte: new Date(filtros.dataInicio) }),
+        ...(filtros.dataFim && { lte: new Date(filtros.dataFim) }),
+      };
+    }
+  
+    // filtro por paciente
     if (filtros.pacienteId) {
       where.paciente_id = Number(filtros.pacienteId);
     }
   
+    // filtro por médico
     if (filtros.medicoId) {
       where.medico_id = Number(filtros.medicoId);
+    }
+  
+    // filtro por status
+    if (filtros.status) {
+      where.status = filtros.status;
     }
   
     return await prisma.consulta.findMany({
@@ -27,6 +50,9 @@ class consultaService {
         medico: { include: { user: true } },
         historico: true,
         registros: true,
+      },
+      orderBy: {
+        date_time: 'desc',
       },
     });
   }

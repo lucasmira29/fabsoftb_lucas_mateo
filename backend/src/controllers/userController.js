@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import userService from '../services/userService.js';
 
 class userController {
@@ -25,11 +26,11 @@ class userController {
     }
   }
 
-  static async listarUsuariosPorTipo(req, res) {
+  static async listarUsuarios(req, res) {
     try {
-      const { role } = req.query;
+      const filters = req.query;
 
-      const users = await userService.getUsersByRole(role);
+      const users = await userService.filtrarUsuarios(filters);
 
       return res.status(200).json(users);
     } catch (error) {
@@ -72,9 +73,16 @@ class userController {
         return res.status(401).json({ message: "Usuário ou senha incorreto" });
       }
 
+      const token = jwt.sign({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      }, process.env.SECRET, { expiresIn: '1h' });
 
       return res.status(200).json({
         message: "Login realizado com sucesso",
+        token,
         user: {
           id: user.id,
           name: user.name,
