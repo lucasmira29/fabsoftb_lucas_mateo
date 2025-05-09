@@ -4,6 +4,7 @@ import userRoutes from './userRoutes.js';
 import medicoRoutes from './medicoRoutes.js';
 import recepcionistaRoutes from './recepcionistaRoutes.js';
 import consultaRoutes from './consultaRoutes.js';
+import horarioMedicoRoutes from './horarioMedicoRoutes.js';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use("/usuario", userRoutes);
 router.use("/medico", medicoRoutes);
 router.use("/recepcionista", recepcionistaRoutes);
 router.use("/consulta", consultaRoutes);
+router.use("/horarios", horarioMedicoRoutes);
 
 export default router;

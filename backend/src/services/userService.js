@@ -1,13 +1,10 @@
-import prisma from "../config/dbConfig.js";
+import prisma from '../config/dbConfig.js';
 
 class userService {
   static async getUserByCpfEmail(data) {
     return await prisma.user.findFirst({
       where: {
-        OR: [
-          { document: data.document },
-          { email: data.email },
-        ],
+        OR: [{ document: data.document }, { email: data.email }],
       },
     });
   }
@@ -15,6 +12,15 @@ class userService {
   static async getUserById(id) {
     return await prisma.user.findUnique({
       where: { id },
+      select: {
+        id: true,
+        document: true,
+        birthdate: true,
+        phone: true,
+        postal_code: true,
+        email: true,
+        role: true,
+      },
     });
   }
 
@@ -49,6 +55,15 @@ class userService {
 
     return prisma.user.findMany({
       where,
+      select: {
+        id: true,
+        document: true,
+        birthdate: true,
+        phone: true,
+        postal_code: true,
+        email: true,
+        role: true,
+      },
       orderBy: { created_at: 'desc' },
     });
   }
