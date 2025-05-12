@@ -36,11 +36,18 @@ class recepcionistaService {
     });
   }
 
-  static async getAllRecepcionistas() {
-    return await prisma.recepcionista.findMany({
+  static async getAllRecepcionistas(filtros) {
+ 
+    const page = parseInt(filtros.page) || 1;
+    const limit = parseInt(filtros.limit) || 10;
+    const skip = (page - 1) * limit;
+
+
+    const recepcionistas = await prisma.recepcionista.findMany({
       where: {
         user: {
           deleted_at: null,
+          ...filtros,
         },
       },
       select: {
@@ -57,7 +64,27 @@ class recepcionistaService {
           },
         },
       },
+      skip,
+      take: limit,
+      orderBy: {
+        id: 'desc',
+      },
     });
+
+    const total = await prisma.recepcionista.count({
+      where: {
+        user: {
+          ...filtros,
+        },
+      },
+    });
+
+    return {
+      recepcionistas,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   static async getRecepcionistaById(id) {

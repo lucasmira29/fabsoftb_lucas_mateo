@@ -65,14 +65,14 @@ class consultaController {
     }
   }
 
-  static async cancelar(req, res) {
+  static async deletar(req, res) {
     try {
       const { id } = req.params;
-      await consultaService.cancelarConsulta(id);
+      await consultaService.deletarConsulta(id);
       
-      res.status(200).json({ message: 'Consulta cancelada com sucesso' });
+      res.status(200).json({ message: 'Consulta deletada com sucesso' });
     } catch (error) {
-      res.status(500).json({ message: 'Erro ao cancelar consulta', error });
+      res.status(500).json({ message: 'Erro ao deletar consulta', error });
     }
   }
 }

@@ -41,8 +41,10 @@ class recepcionistaController {
   }
 
   static async listarRecepcionistas(req, res) {
+    const filtros = req.query;
+    
     try {
-      const recepcionistas = await recepcionistaService.getAllRecepcionistas();
+      const recepcionistas = await recepcionistaService.getAllRecepcionistas(filtros);
       res.status(200).json(recepcionistas);
     } catch (error) {
       console.error(error);

@@ -53,8 +53,15 @@ class userService {
       where.status = filtros.status;
     }
 
-    return prisma.user.findMany({
+    const page = parseInt(filtros.page) || 1;
+    const limit = parseInt(filtros.limit) || 10;
+    const skip = (page - 1) * limit;
+
+
+    const users = await prisma.user.findMany({
       where,
+      skip,
+      take: limit,
       select: {
         id: true,
         document: true,
@@ -66,6 +73,15 @@ class userService {
       },
       orderBy: { created_at: 'desc' },
     });
+
+    const total = await prisma.user.count({ where });
+
+    return {
+      users,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 }
 

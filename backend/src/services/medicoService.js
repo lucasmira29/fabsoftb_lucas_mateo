@@ -1,9 +1,7 @@
-import prisma from "../config/dbConfig.js";
-import { hashPassword } from "../utils/hash.js";
-
+import prisma from '../config/dbConfig.js';
+import { hashPassword } from '../utils/hash.js';
 
 class medicoService {
-
   static async createMedico(userData, specialty) {
     return prisma.$transaction(async (tx) => {
       const hashedPassword = await hashPassword(userData.password);
@@ -25,7 +23,6 @@ class medicoService {
     });
   }
 
-
   static async getAllMedicos(filtros) {
     const medicoWhere = {};
     const userWhere = { deleted_at: null };
@@ -34,10 +31,14 @@ class medicoService {
       medicoWhere.specialty = filtros.specialty;
     }
 
-    if (filtros.name) userWhere.name = filtros.name;
-    if (filtros.email) userWhere.email = filtros.email;
+    if (filtros.name) userWhere.name = { contains: filtros.name };
+    if (filtros.email) userWhere.email = { contains: filtros.email };
 
-    return await prisma.medico.findMany({
+    const page = parseInt(filtros.page) || 1;
+    const limit = parseInt(filtros.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const medicos = await prisma.medico.findMany({
       where: {
         ...medicoWhere,
         user: {
@@ -66,9 +67,26 @@ class medicoService {
           },
         },
       },
+      skip,
+      take: limit,
     });
-  }
 
+    const total = await prisma.medico.count({
+      where: {
+        ...medicoWhere,
+        user: {
+          ...userWhere,
+        },
+      },
+    });
+
+    return {
+      medicos,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
 
   static async getMedicoById(id) {
     return await prisma.medico.findUnique({
@@ -97,7 +115,7 @@ class medicoService {
       },
     });
   }
-  
+
   static async updateMedico(id, newData) {
     return await prisma.user.update({
       where: { id },
@@ -113,7 +131,6 @@ class medicoService {
       },
     });
   }
-
 }
 
 export default medicoService;

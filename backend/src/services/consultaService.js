@@ -152,10 +152,9 @@ class consultaService {
     });
   }
 
-  static async cancelarConsulta(id) {
-    return await prisma.consulta.update({
+  static async deletarConsulta(id) {
+    return await prisma.consulta.delete({
       where: { id },
-      data: { status: 'cancelado' },
     });
   }
 }

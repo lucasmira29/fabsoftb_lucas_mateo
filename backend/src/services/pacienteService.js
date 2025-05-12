@@ -24,11 +24,15 @@ class pacienteService {
   }
 
   static async getAllPacientes(filtros) {
-    return await prisma.paciente.findMany({
+    const page = parseInt(filtros.page) || 1;
+    const limit = parseInt(filtros.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const pacientes = await prisma.paciente.findMany({
       where: {
         user: {
-          ...filtros,
           deleted_at: null,
+          ...filtros,
         },
       },
       select: {
@@ -47,7 +51,27 @@ class pacienteService {
         history: true,
         allergies: true,
       },
+      skip,
+      take: limit,
+      orderBy: {
+        id: 'desc',
+      },
     });
+
+    const total = await prisma.paciente.count({
+      where: {
+        user: {
+          ...filtros,
+        },
+      },
+    });
+
+    return {
+      pacientes,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   static async getPacienteById(id) {
