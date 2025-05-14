@@ -23,13 +23,11 @@ enum ConsultaStatus {
 }
 
 enum DiaSemana {
-  domingo
   segunda
   terca
   quarta
   quinta
   sexta
-  sabado
 }
 
 enum AcaoConsulta {

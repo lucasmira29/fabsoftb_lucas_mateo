@@ -64,6 +64,7 @@ class userService {
       take: limit,
       select: {
         id: true,
+        name: true,
         document: true,
         birthdate: true,
         phone: true,

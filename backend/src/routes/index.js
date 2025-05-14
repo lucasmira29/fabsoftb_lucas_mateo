@@ -8,11 +8,11 @@ import horarioMedicoRoutes from './horarioMedicoRoutes.js';
 
 const router = Router();
 
-router.use("/paciente", pacienteRoutes);
-router.use("/usuario", userRoutes);
-router.use("/medico", medicoRoutes);
-router.use("/recepcionista", recepcionistaRoutes);
-router.use("/consulta", consultaRoutes);
+router.use("/pacientes", pacienteRoutes);
+router.use("/usuarios", userRoutes);
+router.use("/medicos", medicoRoutes);
+router.use("/recepcionistas", recepcionistaRoutes);
+router.use("/consultas", consultaRoutes);
 router.use("/horarios", horarioMedicoRoutes);
 
 export default router;
