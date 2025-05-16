@@ -43,7 +43,11 @@ class consultaService {
       where.status = filtros.status;
     }
 
-    return await prisma.consulta.findMany({
+    const page = parseInt(filtros.page) || 1;
+    const limit = parseInt(filtros.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const consultas = await prisma.consulta.findMany({
       where,
       select: {
         id: true,
@@ -56,14 +60,9 @@ class consultaService {
             allergies: true,
             user: {
               select: {
-                id: true,
                 name: true,
-                document: true,
-                birthdate: true,
                 phone: true,
-                postal_code: true,
                 email: true,
-                role: true,
               },
             },
           },
@@ -74,14 +73,9 @@ class consultaService {
             specialty: true,
             user: {
               select: {
-                id: true,
                 name: true,
-                document: true,
-                birthdate: true,
                 phone: true,
-                postal_code: true,
                 email: true,
-                role: true,
               },
             },
           },
@@ -89,10 +83,21 @@ class consultaService {
         historico: true,
         registros: true,
       },
+      skip,
+      take: limit,
       orderBy: {
         date_time: 'desc',
       },
     });
+
+    const total = await prisma.consulta.count({ where });
+
+    return {
+      consultas,
+      total,
+      page,
+      totalPage: Math.ceil(total / limit),
+    };
   }
 
   static async listarConsultaPorId(id) {
@@ -109,14 +114,9 @@ class consultaService {
             allergies: true,
             user: {
               select: {
-                id: true,
                 name: true,
-                document: true,
-                birthdate: true,
                 phone: true,
-                postal_code: true,
                 email: true,
-                role: true,
               },
             },
           },
@@ -127,14 +127,9 @@ class consultaService {
             specialty: true,
             user: {
               select: {
-                id: true,
                 name: true,
-                document: true,
-                birthdate: true,
                 phone: true,
-                postal_code: true,
                 email: true,
-                role: true,
               },
             },
           },
