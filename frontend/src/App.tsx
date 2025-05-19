@@ -1,13 +1,24 @@
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 function App() {
-  
+  const isAuthenticated = sessionStorage.getItem('token'); 
 
   return (
-    <>  
+    <Router>
+      <Routes>
+        <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
 
-    </>
-  )
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<SignUp />} />
+
+        {/* <Route path="/dashboard" /> */}
+
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
