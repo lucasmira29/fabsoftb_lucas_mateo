@@ -1,22 +1,53 @@
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Link } from 'react-router';
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import api from "@/services/api";
+import { toast } from "react-toastify";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
+function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  
+  const navigate = useNavigate();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const userData = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await api.post("/usuarios/login", userData);
+      const token = response.data.token;
+      setEmail("");
+      setPassword("");
+      navigate("/dashboard");
+      toast.success(response.data.message);
+    
+      sessionStorage.setItem("token", token);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        console.error(error);
+      }
+    }
+  }
+
   return (
-    <div className={cn('flex flex-col gap-6', className)} {...props}>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle>Entrar na sua conta</CardTitle>
@@ -25,15 +56,16 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={(event) => handleSubmit(event)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">E-mail</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="exemplo@dominio.com"
+                  placeholder="Digite seu email"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="grid gap-3">
@@ -46,7 +78,13 @@ export function LoginForm({
                     Esqueceu a senha?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Digite sua senha"
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full cursor-pointer">
@@ -55,7 +93,7 @@ export function LoginForm({
               </div>
             </div>
             <div className="mt-4 text-center text-sm">
-              Não tem uma conta?{' '}
+              Não tem uma conta?{" "}
               <Link to="/cadastro" className="underline underline-offset-4">
                 Cadastre-se
               </Link>
@@ -66,3 +104,5 @@ export function LoginForm({
     </div>
   );
 }
+
+export default LoginForm;
