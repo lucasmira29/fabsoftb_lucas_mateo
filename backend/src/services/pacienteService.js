@@ -1,14 +1,12 @@
 import prisma from '../config/dbConfig.js';
-import { hashPassword } from '../utils/hash.js';
 
 class pacienteService {
   static async createPaciente(userData, pacienteData) {
     return prisma.$transaction(async (tx) => {
-      const hashedPassword = await hashPassword(userData.password);
+
       const user = await tx.user.create({
         data: {
           ...userData,
-          password: hashedPassword,
         },
       });
 

@@ -10,7 +10,6 @@ class pacienteController {
         phone,
         postal_code,
         email,
-        password,
         history,
       } = req.body;
 
@@ -20,8 +19,7 @@ class pacienteController {
         !birthdate ||
         !phone ||
         !postal_code ||
-        !email ||
-        !password
+        !email
       ) {
         return res
           .status(400)
@@ -35,7 +33,6 @@ class pacienteController {
         phone,
         postal_code,
         email,
-        password,
         role: 'paciente',
       };
 
