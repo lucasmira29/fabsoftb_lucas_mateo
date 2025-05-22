@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,10 +14,13 @@ import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import api from "@/services/api";
 import { toast } from "react-toastify";
+import useAuth from "@/hooks/useAuthContext";
+import { decodeToken, setToken } from "@/utils/handleToken";
 
 function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { login } = useAuth();
   
   const navigate = useNavigate();
 
@@ -35,8 +39,10 @@ function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
       setPassword("");
       navigate("/dashboard");
       toast.success(response.data.message);
-    
-      sessionStorage.setItem("token", token);
+      
+      const decodedUser =  decodeToken(token);
+      login(decodedUser);
+      setToken(token);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);

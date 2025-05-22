@@ -3,9 +3,12 @@ import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import DashboardPage from "./pages/DashboardPage";
+import { AuthProvider } from "./contexts/AuthContext/AuthProvider";
+import { getToken } from "./utils/handleToken";
+
 
 function App() {
-  const isAuthenticated = sessionStorage.getItem("token");
+  const isAuthenticated = getToken();
 
   return (
     <Router>
@@ -15,25 +18,26 @@ function App() {
         hideProgressBar={true}
         theme="dark"
       />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+      <AuthProvider>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/dashboard" />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<SignUp />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
 
-        <Route path="/dashboard" element={<DashboardPage />}/>
-
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
