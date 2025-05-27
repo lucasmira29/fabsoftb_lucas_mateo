@@ -3,11 +3,12 @@ import {
   Calendar,
   ChevronsUpDown,
   Home,
-  Inbox,
+  BriefcaseMedical,
+  UserRound,
   LogOut,
-  Search,
   Settings,
   User2,
+  CalendarPlus,
 } from 'lucide-react';
 
 import {
@@ -38,27 +39,32 @@ import { getInitials } from '@/utils/getInitials';
 const items = [
   {
     title: 'Home',
-    url: '#',
+    url: '/dashboard',
     icon: Home,
   },
   {
-    title: 'Caixa de Entrada',
-    url: '#',
-    icon: Inbox,
-  },
-  {
-    title: 'Calendário',
-    url: '#',
+    title: 'Agenda',
+    url: '/dashboard/agenda',
     icon: Calendar,
   },
   {
-    title: 'Pesquisar',
-    url: '#',
-    icon: Search,
+    title: 'Agendar Consulta',
+    url: '/dashboard/schedule',
+    icon: CalendarPlus,
+  },
+  {
+    title: 'Médicos',
+    url: '/dashboard/medicos',
+    icon: BriefcaseMedical,
+  },
+    {
+    title: 'Pacientes',
+    url: '/dashboard/pacientes',
+    icon: UserRound,
   },
   {
     title: 'Configurações',
-    url: '#',
+    url: '/dashboard/config',
     icon: Settings,
   },
 ];

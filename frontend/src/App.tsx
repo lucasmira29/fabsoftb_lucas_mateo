@@ -5,6 +5,8 @@ import SignUp from "./pages/SignUp";
 import DashboardPage from "./pages/DashboardPage";
 import { AuthProvider } from "./contexts/AuthContext/AuthProvider";
 import { getToken } from "./utils/handleToken";
+import Agenda from "./components/Agenda";
+import ScheduleForm from "./features/Schedule/ScheduleForm";
 
 
 function App() {
@@ -33,7 +35,10 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<SignUp />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} >
+            <Route  path="/dashboard/agenda" element={< Agenda/>}/>
+            <Route  path="/dashboard/schedule" element={< ScheduleForm />}/>
+          </Route>
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
