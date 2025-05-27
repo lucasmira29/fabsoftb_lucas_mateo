@@ -26,12 +26,29 @@ class pacienteService {
     const limit = parseInt(filtros.limit) || 10;
     const skip = (page - 1) * limit;
 
+    const userWhere = {
+      deleted_at: null,
+    };
+
+    if (filtros.name) {
+      userWhere.name = { contains: filtros.name };
+    }
+
+    if (filtros.email) {
+      userWhere.email = { contains: filtros.email };
+    }
+
+    if (filtros.role) {
+      userWhere.role = filtros.role;
+    }
+
+    if (filtros.document) {
+      userWhere.document = { contains: filtros.document };
+    }
+
     const pacientes = await prisma.paciente.findMany({
       where: {
-        user: {
-          deleted_at: null,
-          ...filtros,
-        },
+        user: userWhere,
       },
       select: {
         id: true,
@@ -58,9 +75,7 @@ class pacienteService {
 
     const total = await prisma.paciente.count({
       where: {
-        user: {
-          ...filtros,
-        },
+        user: userWhere,
       },
     });
 
@@ -71,6 +86,7 @@ class pacienteService {
       totalPages: Math.ceil(total / limit),
     };
   }
+
 
   static async getPacienteById(id) {
     return await prisma.paciente.findUnique({
