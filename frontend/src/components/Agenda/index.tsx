@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import type { EventInput } from "@fullcalendar/core";
@@ -29,7 +30,7 @@ export default function Agenda() {
       const query = user?.role === 'medico' ? `medicoId=${user.id}` : '';
 
       try {
-        const response = await api.get(`/consultas?${query}`);
+        const response = await api.get(`/consultas?${query}&status=agendado`);
 
         const data = await response.data;
 
@@ -72,6 +73,11 @@ export default function Agenda() {
         initialView="dayGridMonth"
         weekends={false}
         locale="pt-br"
+        eventTimeFormat={{
+          hour: '2-digit',
+          minute: '2-digit',
+          meridiem: false,
+        }}
         events={events}
         eventClick={handleEventClick}
       />
