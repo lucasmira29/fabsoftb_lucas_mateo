@@ -9,6 +9,7 @@ import {
   Settings,
   User2,
   CalendarPlus,
+  UserPlus,
 } from 'lucide-react';
 
 import {
@@ -57,10 +58,15 @@ const items = [
     url: '/dashboard/medicos',
     icon: BriefcaseMedical,
   },
-    {
+  {
     title: 'Pacientes',
     url: '/dashboard/pacientes',
     icon: UserRound,
+  },
+  {
+    title: 'Cadastrar Paciente',
+    url: '/cadastro?type=paciente',
+    icon: UserPlus,
   },
   {
     title: 'Configurações',
