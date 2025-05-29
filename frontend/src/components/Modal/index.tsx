@@ -2,42 +2,31 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import type { ReactNode } from "react";
 
 type ModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  consulta?: {
-    paciente: string;
-    medico: string;
-    telefone: string;
-    email: string;
-    data: string;
-  };
+  title?: string;
+  description?: string;
+  children?: ReactNode;
+  footer?: ReactNode;
 };
 
-function Modal({ open, onOpenChange, consulta }: ModalProps) {
+function Modal({ open, onOpenChange, title, description, children, footer }: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Detalhes da Consulta</DialogTitle>
-          <DialogDescription>
-            {consulta ? (
-              <div className="space-y-2 mt-2 text-sm text-muted-foreground">
-                <p><strong>Paciente:</strong> {consulta.paciente}</p>
-                <p><strong>Médico:</strong> {consulta.medico}</p>
-                <p><strong>Telefone:</strong> {consulta.telefone}</p>
-                <p><strong>Email:</strong> {consulta.email}</p>
-                <p><strong>Data:</strong> {consulta.data}</p>
-              </div>
-            ) : (
-              <p>Carregando dados da consulta...</p>
-            )}
-          </DialogDescription>
+          {title && <DialogTitle>{title}</DialogTitle>}
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
+        {children}
+        {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>
     </Dialog>
   );

@@ -297,7 +297,7 @@ function SignUpForm({ className, ...props }: React.ComponentProps<'div'>) {
                 <Button
                   variant="outline"
                   className="cursor-pointer w-30"
-                  onClick={() => navigate('/dashboard')}
+                  onClick={() => navigate(-1)}
                 >
                   <ArrowBigLeft />
                   Voltar
