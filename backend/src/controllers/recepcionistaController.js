@@ -1,20 +1,24 @@
 import recepcionistaService from '../services/recepcionistaService.js';
+import jwt from 'jsonwebtoken';
 
 class recepcionistaController {
   static async cadastrarRecepcionista(req, res) {
     try {
-      const {
-        name,
-        document,
-        birthdate,
-        phone,
-        postal_code,
-        email,
-        password,
-      } = req.body;
+      const { name, document, birthdate, phone, postal_code, email, password } =
+        req.body;
 
-      if (!name || !document || !birthdate || !phone || !postal_code || !email || !password) {
-        return res.status(400).json({ message: 'Todos os dados são obrigatórios.' });
+      if (
+        !name ||
+        !document ||
+        !birthdate ||
+        !phone ||
+        !postal_code ||
+        !email ||
+        !password
+      ) {
+        return res
+          .status(400)
+          .json({ message: 'Todos os dados são obrigatórios.' });
       }
 
       const userData = {
@@ -27,24 +31,29 @@ class recepcionistaController {
         password,
       };
 
-      const newRecepcionista = await recepcionistaService.createRecepcionista(userData);
+      const newRecepcionista = await recepcionistaService.createRecepcionista(
+        userData,
+      );
 
       res.status(201).json({
         message: 'Recepcionista cadastrado com sucesso!',
         user: newRecepcionista,
       });
-
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Erro ao cadastrar recepcionista.', error });
+      res
+        .status(500)
+        .json({ message: 'Erro ao cadastrar recepcionista.', error });
     }
   }
 
   static async listarRecepcionistas(req, res) {
     const filtros = req.query;
-    
+
     try {
-      const recepcionistas = await recepcionistaService.getAllRecepcionistas(filtros);
+      const recepcionistas = await recepcionistaService.getAllRecepcionistas(
+        filtros,
+      );
       res.status(200).json(recepcionistas);
     } catch (error) {
       console.error(error);
@@ -56,14 +65,20 @@ class recepcionistaController {
     const { id } = req.params;
 
     try {
-      const recepcionista = await recepcionistaService.getRecepcionistaById(Number(id));
+      const recepcionista = await recepcionistaService.getRecepcionistaById(
+        Number(id),
+      );
       if (!recepcionista) {
-        return res.status(404).json({ message: 'Recepcionista não encontrado' });
+        return res
+          .status(404)
+          .json({ message: 'Recepcionista não encontrado' });
       }
       res.status(200).json(recepcionista);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Erro ao buscar recepcionista por ID', error });
+      res
+        .status(500)
+        .json({ message: 'Erro ao buscar recepcionista por ID', error });
     }
   }
 
@@ -72,17 +87,40 @@ class recepcionistaController {
     const newData = req.body;
 
     try {
-      const recepcionista = await recepcionistaService.getRecepcionistaById(Number(id));
+      const recepcionista = await recepcionistaService.getRecepcionistaById(
+        Number(id),
+      );
       if (!recepcionista) {
-        return res.status(404).json({ message: 'Recepcionista não encontrado' });
+        return res
+          .status(404)
+          .json({ message: 'Recepcionista não encontrado' });
       }
 
-      const updated = await recepcionistaService.updateRecepcionista(Number(id), newData);
-      res.status(200).json(updated);
+      const updatedRecepcionista =
+        await recepcionistaService.updateRecepcionista(Number(id), newData);
 
+      const token = jwt.sign(
+        {
+          id: updatedRecepcionista.id,
+          name: updatedRecepcionista.name,
+          email: updatedRecepcionista.email,
+          document: updatedRecepcionista.document,
+          role: updatedRecepcionista.role,
+        },
+        process.env.SECRET,
+        { expiresIn: '1h' },
+      );
+
+      res.status(200).json({
+        message: 'Recepcionista atualizado com sucesso!',
+        user: updatedRecepcionista,
+        token,
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Erro ao atualizar recepcionista', error });
+      res
+        .status(500)
+        .json({ message: 'Erro ao atualizar recepcionista', error });
     }
   }
 
@@ -90,14 +128,17 @@ class recepcionistaController {
     const { id } = req.params;
 
     try {
-      const recepcionista = await recepcionistaService.getRecepcionistaById(Number(id));
+      const recepcionista = await recepcionistaService.getRecepcionistaById(
+        Number(id),
+      );
       if (!recepcionista) {
-        return res.status(404).json({ message: 'Recepcionista não encontrado' });
+        return res
+          .status(404)
+          .json({ message: 'Recepcionista não encontrado' });
       }
 
       await recepcionistaService.deleteRecepcionista(Number(id));
       res.status(200).json({ message: 'Recepcionista deletado com sucesso' });
-
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Erro ao deletar recepcionista', error });

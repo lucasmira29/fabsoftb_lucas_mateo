@@ -117,9 +117,32 @@ class medicoService {
   }
 
   static async updateMedico(id, newData) {
-    return await prisma.user.update({
-      where: { id },
-      data: newData,
+    const { specialty, ...userData } = newData;
+
+    return await prisma.$transaction(async (tx) => {
+      const updatedUser = await tx.user.update({
+        where: { id },
+        data: {
+          ...userData,
+          birthdate: new Date(userData.birthdate), // Certifique-se que é Date
+        },
+      });
+
+      let updatedMedico = null;
+
+      if (specialty) {
+        updatedMedico = await tx.medico.update({
+          where: { id }, // `id` do médico é o mesmo do usuário
+          data: {
+            specialty,
+          },
+        });
+      }
+
+      return {
+        user: updatedUser,
+        medico: updatedMedico,
+      };
     });
   }
 

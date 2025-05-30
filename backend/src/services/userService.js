@@ -10,18 +10,32 @@ class userService {
   }
 
   static async getUserById(id) {
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
+        name: true,
         document: true,
         birthdate: true,
         phone: true,
         postal_code: true,
         email: true,
         role: true,
+        Medico: {
+          select: {
+            specialty: true,
+          },
+        },
       },
     });
+
+    if (!user) return null;
+
+    return {
+      ...user,
+      specialty: user.Medico?.specialty || null,
+      Medico: undefined, // remove o campo Medico
+    };
   }
 
   static async getUserByEmail(email) {
@@ -56,7 +70,6 @@ class userService {
     const page = parseInt(filtros.page) || 1;
     const limit = parseInt(filtros.limit) || 10;
     const skip = (page - 1) * limit;
-
 
     const users = await prisma.user.findMany({
       where,
