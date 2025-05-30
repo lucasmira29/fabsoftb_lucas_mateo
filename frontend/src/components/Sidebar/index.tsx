@@ -36,6 +36,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import useAuth from '@/hooks/useAuthContext';
 import { getInitials } from '@/utils/getInitials';
+import { useNavigate } from 'react-router';
 
 const items = [
   {
@@ -78,6 +79,7 @@ const items = [
 export function AppSidebar() {
   
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   
   return (
     <Sidebar>
@@ -101,10 +103,10 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu>
+        <SidebarMenu >
           <SidebarMenuItem>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger className='cursor-pointer' asChild>
                 <SidebarMenuButton
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
@@ -142,17 +144,17 @@ export function AppSidebar() {
                 <DropdownMenuGroup></DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className='cursor-pointer' onClick={() => navigate('/dashboard/account')}>
                     <User2 />
                     Conta
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className='cursor-pointer'>
                     <Bell />
                     Notificações
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => logout()}>
+                <DropdownMenuItem className='cursor-pointer' onClick={() => logout()}>
                   <LogOut />
                     Sair
                 </DropdownMenuItem>

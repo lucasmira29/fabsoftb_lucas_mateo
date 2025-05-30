@@ -1,5 +1,6 @@
 
 export type User = {
+  id?: number;
   name: string;
   email: string;
   password: string;
@@ -7,7 +8,7 @@ export type User = {
   birthdate: Date;
   phone?: string;
   postal_code: string;
-  specialty?: string;
+  specialty?: string | null;
 }
 
 export type Role = 'admin' | 'medico' | 'recepcionista' | 'paciente';

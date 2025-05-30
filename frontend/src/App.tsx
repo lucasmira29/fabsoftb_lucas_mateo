@@ -8,6 +8,7 @@ import { getToken } from "./utils/handleToken";
 import Agenda from "./components/Agenda";
 import ScheduleForm from "./features/Schedule/ScheduleForm";
 import ConsultaDetails from "./features/Consulta/ConsultaDetails";
+import AccountDetails from "./features/Account/AccountDetails";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
             <Route  path="/dashboard/agenda" element={< Agenda/>}/>
             <Route  path="/dashboard/schedule" element={< ScheduleForm />}/>
             <Route  path="/dashboard/consulta/:id" element={<ConsultaDetails />}/>
+            <Route path="/dashboard/account" element={<AccountDetails />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" />} />
