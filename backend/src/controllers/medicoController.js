@@ -97,10 +97,10 @@ class medicoController {
 
       const newToken = jwt.sign(
         {
-          id: updatedMedico.id,
-          name: updatedMedico.name,
-          email: updatedMedico.email,
-          role: updatedMedico.role,
+          id: updatedMedico.user.id,
+          name: updatedMedico.user.name,
+          email: updatedMedico.user.email,
+          role: updatedMedico.user.role,
         },
         process.env.SECRET,
         { expiresIn: '1h' },
@@ -108,7 +108,13 @@ class medicoController {
 
       return res.status(200).json({
         message: 'Médico atualizado com sucesso!',
-        ...updatedMedico,
+        user: {
+          id: updatedMedico.user.id,
+          name: updatedMedico.user.name,
+          email: updatedMedico.user.email,
+          document: updatedMedico.user.document,
+          role: updatedMedico.user.role,
+        },
         token: newToken,
       });
     } catch (error) {

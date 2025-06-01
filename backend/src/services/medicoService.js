@@ -124,7 +124,6 @@ class medicoService {
         where: { id },
         data: {
           ...userData,
-          birthdate: new Date(userData.birthdate), // Certifique-se que é Date
         },
       });
 
@@ -132,7 +131,7 @@ class medicoService {
 
       if (specialty) {
         updatedMedico = await tx.medico.update({
-          where: { id }, // `id` do médico é o mesmo do usuário
+          where: { id },
           data: {
             specialty,
           },
