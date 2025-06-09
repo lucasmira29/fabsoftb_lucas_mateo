@@ -2,9 +2,9 @@ import { AppSidebar } from '@/components/Sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import useAuth from '@/hooks/useAuthContext';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 
-function DefaultLayout({ children }: { children: React.ReactNode }) {
+function DefaultLayout() {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ function DefaultLayout({ children }: { children: React.ReactNode }) {
         <AppSidebar />
         <div className="flex-1 p-6 bg-gray-50">
           <SidebarTrigger />
-          <main>{children}</main>
+          <main><Outlet /></main>
         </div>
       </SidebarProvider>
     </>

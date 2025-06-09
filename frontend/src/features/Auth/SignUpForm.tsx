@@ -105,7 +105,7 @@ function SignUpForm({ className, ...props }: React.ComponentProps<'div'>) {
       if (tipoCadastro !== 'paciente') {
         return navigate('/login');
       }
-      navigate('/dashboard');
+      navigate('/dashboard/home');
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);

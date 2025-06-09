@@ -3,11 +3,12 @@ import useAuth from "@/hooks/useAuthContext";
 
 import Login from "@/pages/Login";
 import SignUp from "@/pages/SignUp";
-import DashboardPage from "@/pages/DashboardPage";
 import Agenda from "@/components/Agenda";
 import ScheduleForm from "@/features/Schedule/ScheduleForm";
 import ConsultaDetails from "@/features/Consulta/ConsultaDetails";
 import AccountDetails from "@/features/Account/AccountDetails";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import DashboardHome from "@/pages/DashboardHome";
 
 function AppRoutes() {
   const { user, isLoading } = useAuth();
@@ -25,8 +26,9 @@ function AppRoutes() {
 
       <Route
         path="/dashboard"
-        element={user ? <DashboardPage /> : <Navigate to="/login" />}
+        element={user ? <DefaultLayout /> : <Navigate to="/login" />}
       >
+        <Route path="home" element={<DashboardHome />}/>
         <Route path="agenda" element={<Agenda />} />
         <Route path="schedule" element={<ScheduleForm />} />
         <Route path="consulta/:id" element={<ConsultaDetails />} />

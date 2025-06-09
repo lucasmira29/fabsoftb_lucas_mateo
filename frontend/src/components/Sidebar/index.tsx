@@ -41,7 +41,7 @@ import { useNavigate } from 'react-router';
 const items = [
   {
     title: 'Home',
-    url: '/dashboard',
+    url: '/dashboard/home',
     icon: Home,
   },
   {

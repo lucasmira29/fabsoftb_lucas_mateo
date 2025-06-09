@@ -37,7 +37,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
       const token = response.data.token;
       setEmail("");
       setPassword("");
-      navigate("/dashboard");
+      navigate("/dashboard/home");
       toast.success(response.data.message);
       
       const decodedUser =  decodeToken(token);
