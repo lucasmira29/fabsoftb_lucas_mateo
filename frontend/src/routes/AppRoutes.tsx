@@ -9,6 +9,7 @@ import ConsultaDetails from "@/features/Consulta/ConsultaDetails";
 import AccountDetails from "@/features/Account/AccountDetails";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import DashboardHome from "@/pages/DashboardHome";
+import MedicosPage from "@/pages/Medicos";
 
 function AppRoutes() {
   const { user, isLoading } = useAuth();
@@ -33,6 +34,7 @@ function AppRoutes() {
         <Route path="schedule" element={<ScheduleForm />} />
         <Route path="consulta/:id" element={<ConsultaDetails />} />
         <Route path="account" element={<AccountDetails />} />
+        <Route path="medicos" element={<MedicosPage />}/>
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />

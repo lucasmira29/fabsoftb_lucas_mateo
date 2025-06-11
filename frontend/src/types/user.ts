@@ -3,7 +3,7 @@ export type User = {
   id?: number;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   document: string;
   birthdate: Date;
   phone?: string;
