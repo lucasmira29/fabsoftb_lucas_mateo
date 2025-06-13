@@ -10,6 +10,7 @@ import AccountDetails from "@/features/Account/AccountDetails";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import DashboardHome from "@/pages/DashboardHome";
 import MedicosPage from "@/pages/Medicos";
+import PacientesPage from "@/pages/Pacientes";
 
 function AppRoutes() {
   const { user, isLoading } = useAuth();
@@ -35,6 +36,7 @@ function AppRoutes() {
         <Route path="consulta/:id" element={<ConsultaDetails />} />
         <Route path="account" element={<AccountDetails />} />
         <Route path="medicos" element={<MedicosPage />}/>
+        <Route path="pacientes" element={<PacientesPage />}/>
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />

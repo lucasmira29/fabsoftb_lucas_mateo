@@ -5,26 +5,27 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import type { Medico } from '@/types/medico';
+import type { Paciente } from '@/types/paciente';
 import { formatPhone } from '@/utils/formatters';
 import { getInitials } from '@/utils/getInitials';
 
-type medicoDataProps = {
-  medicoData: Medico;
+type userDataProps = {
+  userData: Medico | Paciente;
 };
 
 
-function UserCard({ medicoData }: medicoDataProps) {
+function UserCard({ userData }: userDataProps) {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
         <div className="pb-3 flex justify-center">
           <span className="text-center rounded-full bg-gray-100 w-fit p-1">
-            {getInitials(medicoData.user.name)}
+            {getInitials(userData.user.name)}
           </span>
         </div>
-        <CardTitle className='text-lg'>{medicoData.user.name}</CardTitle>
-        <CardDescription>{medicoData.user.email}</CardDescription>
-        <CardDescription>{formatPhone(medicoData.user.phone || '')}</CardDescription>
+        <CardTitle className='text-lg'>{userData.user.name}</CardTitle>
+        <CardDescription>{userData.user.email}</CardDescription>
+        <CardDescription>{formatPhone(userData.user.phone || '')}</CardDescription>
       </CardHeader>
     </Card>
   );
