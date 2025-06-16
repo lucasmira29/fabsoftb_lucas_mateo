@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import api from "@/services/api";
-import type { Consulta } from "@/types/consulta";
-import { Check, Pen } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Button } from '@/components/ui/button';
+import api from '@/services/api';
+import type { Consulta } from '@/types/consulta';
+import { Pen } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
 function ConsultaDetails() {
   const { id } = useParams();
@@ -20,6 +20,8 @@ function ConsultaDetails() {
     }
     fetchConsulta();
   }, []);
+
+
 
   return (
     consulta && (
@@ -86,10 +88,6 @@ function ConsultaDetails() {
           >
             <Pen className="w-4 h-4" />
             Editar
-          </Button>
-          <Button className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-500 hover:bg-green-600 text-white cursor-pointer">
-            <Check className="w-4 h-4" />
-            Confirmar
           </Button>
         </div>
       </div>

@@ -21,7 +21,7 @@ function DefaultLayout() {
         </header>
       <SidebarProvider>
         <AppSidebar />
-        <div className="flex-1 p-6 bg-gray-50">
+        <div className="flex-1 sm:p-6 p-3 bg-gray-50">
           <SidebarTrigger />
           <main><Outlet /></main>
         </div>

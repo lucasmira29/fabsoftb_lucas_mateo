@@ -1,0 +1,66 @@
+/* Título do calendário */
+.fc .fc-toolbar-title {
+  font-size: 1rem; /* base */
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 640px) {
+  .fc .fc-toolbar-title {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .fc .fc-toolbar-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Botões do calendário */
+.fc .fc-button {
+  font-size: 0.75rem;     
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem; 
+  background-color: #f3f4f6;
+  color: #1f2937; 
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.fc .fc-button:hover {
+  background-color: #e5e7eb;
+}
+
+.fc .fc-button-primary {
+  background-color: #3b82f6;
+  cursor: pointer;
+  color: white;
+  border: none;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: #2563eb;
+}
+
+.fc .fc-button .fc-icon {
+  font-size: 0.875rem;
+}
+
+/* Responsividade do header */
+.fc .fc-toolbar {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+/* Responsividade do calendário */
+.fc {
+  width: 100%;
+}
+
+.fc .fc-view-harness {
+  overflow-x: auto;
+}
