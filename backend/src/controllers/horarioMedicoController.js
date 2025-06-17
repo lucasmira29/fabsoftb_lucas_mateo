@@ -4,9 +4,9 @@ import { parse } from 'date-fns';
 class HorarioMedicoController {
   static async criarHorario(req, res) {
     try {
-      const { medico_id, day_of_week, start_time, end_time } = req.body;
+      const { medico_id, start_time, end_time } = req.body;
 
-      if (!medico_id || !day_of_week || !start_time || !end_time) {
+      if (!medico_id || !start_time || !end_time) {
         return res
           .status(400)
           .json({ message: 'Campos obrigatórios faltando.' });
@@ -17,13 +17,12 @@ class HorarioMedicoController {
 
       const data = {
         medico_id,
-        day_of_week,
         start_time: parsedStart,
         end_time: parsedEnd,
       };
 
-      const novo = await horarioMedicoService.create(data);
-      res.status(201).json({ message: 'Horário criado com sucesso!', novo });
+      const horario = await horarioMedicoService.create(data);
+      res.status(201).json({ message: 'Horário criado com sucesso!', horario });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -59,14 +58,13 @@ class HorarioMedicoController {
     try {
       const { id } = req.params;
 
-      const { medico_id, day_of_week, start_time, end_time } = req.body;
+      const { medico_id, start_time, end_time } = req.body;
 
       const parsedStart = parse(start_time, 'HH:mm', new Date(0));
       const parsedEnd = parse(end_time, 'HH:mm', new Date(0));
 
       const data = {
         medico_id,
-        day_of_week,
         start_time: parsedStart,
         end_time: parsedEnd,
       };

@@ -1,47 +1,70 @@
-import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import SearchInput from '@/components/SearchInput';
-import api from '@/services/api';
-import { toast } from 'react-toastify';
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import SearchInput from "@/components/SearchInput";
+import api from "@/services/api";
+import { toast } from "react-toastify";
+import SelectInput from "@/components/SelectInput";
+import { DatePicker } from "@/components/DatePicker";
 
 function ScheduleForm() {
   const [pacienteId, setPacienteId] = useState<number | null>(null);
   const [medicoId, setMedicoId] = useState<number | null>(null);
-  const [data, setData] = useState<string>('');
-  const [horario, setHorario] = useState<string>('');
-  const [descricao, setDescricao] = useState<string>('');
+  const [date, setDate] = useState<Date | undefined>();
+  const [horario, setHorario] = useState<string>("");
+  const [descricao, setDescricao] = useState<string>("");
+  const [horariosDisponiveis, setHorariosDisponiveis] = useState<string[]>([]);
+
+  useEffect(() => {
+    setHorario("");
+    setHorariosDisponiveis([]);
+
+    async function fetchHorariosDisponiveis() {
+      if (!medicoId || !date) return;
+
+      try {
+        const dataFormatada = format(date, "yyyy-MM-dd");
+        const response = await api.get(
+          `/horarios/disponivel/${medicoId}?data=${dataFormatada}`
+        );
+        setHorariosDisponiveis(response.data.horarios || []);
+      } catch (error) {
+        console.error(error);
+        setHorariosDisponiveis([]);
+      }
+    }
+    fetchHorariosDisponiveis();
+  }, [date, medicoId]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!pacienteId || !medicoId) {
-      alert('Selecione paciente e médico.');
+    if (!pacienteId || !medicoId || !date || !horario) {
+      toast.warn("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
-    const [year, month, day] = data.split('-');
-    const formattedDate = `${day}/${month}/${year}`;
-    const formattedDateTime = `${formattedDate} ${horario}`;
+    const dataFormatada = format(date, "yyyy-MM-dd");
 
     const consultaData = {
       paciente_id: pacienteId,
       medico_id: medicoId,
-      date_time: formattedDateTime,
-      status: 'agendado',
+      date_time: new Date(`${dataFormatada}T${horario}:00`).toISOString(),
+      status: "agendado",
       description: descricao,
     };
 
     try {
-      const response = await api.post('/consultas', consultaData);
-      setData('');
-      setHorario('');
-      setDescricao('');
+      const response = await api.post("/consultas", consultaData);
+      setDate(undefined);
+      setHorario("");
+      setDescricao("");
       toast.success(response.data.message);
     } catch (error) {
       console.error(error);
+      toast.error("Ocorreu um erro ao agendar a consulta.");
     }
   }
 
@@ -77,25 +100,19 @@ function ScheduleForm() {
 
         <div className="flex flex-col gap-1">
           <Label htmlFor="data">Data</Label>
-          <Input
-            id="data"
-            name="data"
-            type="date"
-            value={data}
-            required
-            onChange={(e) => setData(e.target.value)}
-          />
+          <DatePicker date={date} setDate={setDate} />
         </div>
 
         <div className="flex flex-col gap-1">
           <Label htmlFor="horario">Horário</Label>
-          <Input
-            id="horario"
-            name="horario"
-            type="time"
-            value={horario}
-            required
-            onChange={(e) => setHorario(e.target.value)}
+          <SelectInput
+            items={horariosDisponiveis}
+            placeholder={
+              horariosDisponiveis.length > 0
+                ? "Selecione um horário"
+                : "Selecione uma data e médico"
+            }
+            onChange={setHorario}
           />
         </div>
 
@@ -107,6 +124,7 @@ function ScheduleForm() {
             value={descricao}
             placeholder="Descreva brevemente a razão da consulta"
             onChange={(e) => setDescricao(e.target.value)}
+            className="bg-white"
           />
         </div>
 

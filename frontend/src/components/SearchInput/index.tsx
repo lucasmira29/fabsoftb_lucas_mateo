@@ -85,7 +85,7 @@ function SearchInput({
   }, [name, SearchRole, selected]);
 
   return (
-    <Command className='rounded-md border-input border shadow-xs md:min-w-[450px] bg-transparent'>
+    <Command className='rounded-md border-input border shadow-xs md:min-w-[450px] bg-white'>
       <CommandInput
         placeholder={placeholder}
         value={name}

@@ -1,7 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
-  binaryTargets = ["native", "windows", "debian-openssl-3.0.x"]
+  provider        = "prisma-client-js"
+  output          = "../src/generated/prisma"
+  binaryTargets   = ["native", "windows", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -22,20 +22,6 @@ enum ConsultaStatus {
   realizado
 }
 
-enum DiaSemana {
-  segunda
-  terca
-  quarta
-  quinta
-  sexta
-}
-
-enum AcaoConsulta {
-  agendado
-  cancelado
-  reagendado
-}
-
 model User {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(100)
@@ -44,17 +30,16 @@ model User {
   phone       String?  @db.VarChar(15)
   postal_code String   @db.VarChar(8)
   email       String   @unique @db.VarChar(255)
-  password    String?   @db.VarChar(255)
+  password    String?  @db.VarChar(255)
   role        Role
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   deleted_at  DateTime?
 
   // relations
-  Medico         Medico?
-  Paciente       Paciente?
-  Recepcionista  Recepcionista?
-  historicoAcoes HistoricoConsulta[] @relation("HistoricoAcoes")
+  Medico        Medico?
+  Paciente      Paciente?
+  Recepcionista Recepcionista?
 
   @@map("users")
 }
@@ -100,24 +85,9 @@ model Consulta {
 
   paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
   medico   Medico   @relation(fields: [medico_id], references: [id], onDelete: Cascade)
-  historico HistoricoConsulta[]
   registros RegistroMedico[]
 
   @@map("consultas")
-}
-
-model HistoricoConsulta {
-  id            String           @id @default(cuid())
-  consulta_id   String
-  acao          AcaoConsulta
-  realizado_por Int
-  data_acao     DateTime
-  observacao    String?
-
-  consulta Consulta @relation(fields: [consulta_id], references: [id])
-  realizadoPor User     @relation("HistoricoAcoes", fields: [realizado_por], references: [id])
-
-  @@map("historicos_consultas")
 }
 
 model RegistroMedico {
@@ -138,11 +108,10 @@ model RegistroMedico {
 }
 
 model HorarioMedico {
-  id          String       @id @default(cuid())
-  medico_id   Int
-  day_of_week DiaSemana
-  start_time  DateTime  @db.Time(0)
-  end_time    DateTime  @db.Time(0)
+  id         String   @id @default(cuid())
+  medico_id  Int
+  start_time DateTime @db.Time(0)
+  end_time   DateTime @db.Time(0)
 
   medico Medico @relation(fields: [medico_id], references: [id], onDelete: Cascade)
 

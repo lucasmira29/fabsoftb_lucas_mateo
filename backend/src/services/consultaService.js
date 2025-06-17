@@ -80,7 +80,6 @@ class consultaService {
             },
           },
         },
-        historico: true,
         registros: true,
       },
       skip,
@@ -134,7 +133,6 @@ class consultaService {
             },
           },
         },
-        historico: true,
         registros: true,
       },
     });
@@ -152,6 +150,19 @@ class consultaService {
       where: { id },
     });
   }
+
+  static async existeConflitoHorario(medico_id, date_time) {
+    return await prisma.consulta.findFirst({
+      where: {
+        medico_id,
+        date_time: date_time,
+        status: {
+          in: ['agendado', 'realizado'],
+        },
+      },
+    });
+  }
+
 }
 
 export default consultaService;

@@ -61,7 +61,6 @@ class medicoService {
         },
         horarios: {
           select: {
-            day_of_week: true,
             start_time: true,
             end_time: true,
           },
@@ -107,7 +106,6 @@ class medicoService {
         },
         horarios: {
           select: {
-            day_of_week: true,
             start_time: true,
             end_time: true,
           },
