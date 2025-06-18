@@ -134,16 +134,6 @@ export default function Agenda() {
     setPacienteFilter('');
   };
 
-  async function updateConsulta(id: string | undefined) {
-    try {
-      api.put(`/consultas/${id}`, {
-        status: 'realizado',
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return (
     <div className="flex flex-col items-center justify-center w-full sm:p-6 p-0">
       <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 mb-6">
@@ -225,15 +215,6 @@ export default function Agenda() {
               className="cursor-pointer"
             >
               Ver mais
-            </Button>
-            <Button
-              onClick={() =>
-                updateConsulta(selectedEvent?.extendedProps.consultaId)
-              }
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-500 hover:bg-green-600 text-white cursor-pointer"
-            >
-              <Check className="w-4 h-4" />
-              Confirmar
             </Button>
           </>
         }

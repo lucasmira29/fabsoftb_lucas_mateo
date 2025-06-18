@@ -1,16 +1,16 @@
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
-import { Calendar as CalendarIcon } from "lucide-react"
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Calendar as CalendarIcon } from 'lucide-react';
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
+} from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
 
 interface DatePickerProps {
   date: Date | undefined;
@@ -23,16 +23,16 @@ export function DatePicker({ date, setDate, className }: DatePickerProps) {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant={'outline'}
           className={cn(
-            "w-full justify-start text-left font-normal cursor-pointer",
-            !date && "text-muted-foreground",
+            'w-full justify-start text-left font-normal cursor-pointer',
+            !date && 'text-muted-foreground',
             className
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? (
-            format(date, "PPP", { locale: ptBR })
+            format(date, 'PPP', { locale: ptBR })
           ) : (
             <span>Selecione uma data</span>
           )}
@@ -44,9 +44,13 @@ export function DatePicker({ date, setDate, className }: DatePickerProps) {
           selected={date}
           onSelect={setDate}
           locale={ptBR}
-          disabled={(day) => day < new Date(new Date().setDate(new Date().getDate() - 1))}
+          disabled={(day) => {
+            const isPast = day < new Date(new Date().setHours(0, 0, 0, 0));
+            const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+            return isPast || isWeekend;
+          }}
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }

@@ -15,12 +15,13 @@ type ModalProps = {
   description?: string;
   children?: ReactNode;
   footer?: ReactNode;
+  customClassName?: string
 };
 
-function Modal({ open, onOpenChange, title, description, children, footer }: ModalProps) {
+function Modal({ open, onOpenChange, title, description, children, footer, customClassName }: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className={customClassName}>
         <DialogHeader>
           {title && <DialogTitle>{title}</DialogTitle>}
           {description && <DialogDescription>{description}</DialogDescription>}
