@@ -106,6 +106,7 @@ class consultaService {
         id: true,
         date_time: true,
         status: true,
+        description: true,
         paciente: {
           select: {
             id: true,

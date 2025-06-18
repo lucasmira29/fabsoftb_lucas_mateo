@@ -2,6 +2,7 @@ export type Consulta = {
   id: string;
   date_time: string;
   status: string;
+  description?: string;
   paciente: {
     id: number;
     history: string | null;
