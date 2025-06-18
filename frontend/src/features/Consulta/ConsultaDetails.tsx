@@ -1,9 +1,12 @@
+import { DatePicker } from '@/components/DatePicker';
 import Modal from '@/components/Modal';
+import SelectInput from '@/components/SelectInput';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import api from '@/services/api';
 import type { Consulta } from '@/types/consulta';
+import { format } from 'date-fns';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -14,15 +17,40 @@ function ConsultaDetails() {
   const [consulta, setConsulta] = useState<Consulta>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenCancelar, setIsOpenCancelar] = useState<boolean>(false);
+  const [isOpenRemarcar, setIsOpenRemarcar] = useState<boolean>(false);
   const [observacoes, setObservacoes] = useState('');
   const [diagnostico, setDiagnostico] = useState('');
   const [tratamento, setTratamento] = useState('');
+  const [novaData, setNovaData] = useState<Date | undefined>();
+  const [novoHorario, setNovoHorario] = useState<string>('');
+  const [horariosDisponiveis, setHorariosDisponiveis] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchConsulta();
   }, []);
+
+  useEffect(() => {
+    async function fetchHorariosDisponiveis() {
+      if (!consulta?.medico.id || !novaData) return;
+
+      try {
+        const dataFormatada = format(novaData, 'yyyy-MM-dd');
+        const response = await api.get(
+          `/horarios/disponivel/${consulta.medico.id}?data=${dataFormatada}`
+        );
+        setHorariosDisponiveis(response.data.horarios || []);
+      } catch (error) {
+        console.error(error);
+        setHorariosDisponiveis([]);
+      }
+    }
+
+    setNovoHorario('');
+    setHorariosDisponiveis([]);
+    fetchHorariosDisponiveis();
+  }, [novaData, consulta?.medico.id]);
 
   async function fetchConsulta() {
     try {
@@ -225,6 +253,7 @@ function ConsultaDetails() {
               <Button
                 variant="outline"
                 className="cursor-pointer min-w-[120px]"
+                onClick={() => setIsOpenRemarcar(true)}
               >
                 Remarcar
               </Button>
@@ -327,6 +356,34 @@ function ConsultaDetails() {
             </div>
           }
         />
+
+        <Modal
+          open={isOpenRemarcar}
+          onOpenChange={setIsOpenRemarcar}
+          title="Remarcar Consulta"
+          customClassName="max-w-md h-[520px]" 
+        >
+          <div className='flex flex-col gap-6 py-3 items-left'>
+            <div>
+              <Label className='pb-2'>Nova data</Label>
+              <DatePicker date={novaData} setDate={setNovaData} />
+            </div>
+
+            <div>
+              <Label className='pb-2'>Novo Horário</Label>
+              <SelectInput
+                items={horariosDisponiveis}
+                placeholder={
+                  horariosDisponiveis.length > 0
+                    ? 'Selecione um horário'
+                    : 'Selecione uma data'
+                }
+                onChange={setNovoHorario}
+              />
+            </div>
+            <Button className='cursor-pointer '>Remarcar</Button> 
+          </div>
+        </Modal>
       </>
     )
   );
