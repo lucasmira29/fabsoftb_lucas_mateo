@@ -28,14 +28,24 @@ class consultaService {
       };
     }
 
-    // filtro por paciente
+    // filtro por ID do paciente
     if (filtros.pacienteId) {
       where.paciente_id = Number(filtros.pacienteId);
     }
 
-    // filtro por médico
+    // filtro por ID do médico
     if (filtros.medicoId) {
       where.medico_id = Number(filtros.medicoId);
+    }
+    
+    if (filtros.paciente) {
+      where.paciente = {
+        user: {
+          name: {
+            contains: filtros.paciente,
+          },
+        },
+      };
     }
 
     // filtro por status
@@ -163,7 +173,6 @@ class consultaService {
       },
     });
   }
-
 }
 
 export default consultaService;

@@ -11,6 +11,8 @@ import DefaultLayout from "@/layouts/DefaultLayout";
 import DashboardHome from "@/pages/DashboardHome";
 import MedicosPage from "@/pages/Medicos";
 import PacientesPage from "@/pages/Pacientes";
+import RequireRole from "@/components/RequireRole";
+import MinhasConsultasPage from "@/pages/MinhasConsultasPage";
 
 function AppRoutes() {
   const { user, isLoading } = useAuth();
@@ -19,25 +21,26 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
-      />
+      <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cadastro" element={<SignUp />} />
 
-      <Route
-        path="/dashboard"
-        element={user ? <DefaultLayout /> : <Navigate to="/login" />}
-      >
-        <Route path="home" element={<DashboardHome />}/>
-        <Route path="agenda" element={<Agenda />} />
-        <Route path="schedule" element={<ScheduleForm />} />
-        <Route path="consulta/:id" element={<ConsultaDetails />} />
-        <Route path="account" element={<AccountDetails />} />
-        <Route path="medicos" element={<MedicosPage />}/>
-        <Route path="pacientes" element={<PacientesPage />}/>
-      </Route>
+      {user && (
+        <Route path="/dashboard" element={<DefaultLayout />}>
+          <Route path="home" element={<DashboardHome />} />
+          <Route path="agenda" element={<Agenda />} />
+          <Route path="consulta/:id" element={<ConsultaDetails />} />
+          <Route path="minhas-consultas" element={<MinhasConsultasPage />} />
+          <Route path="account" element={<AccountDetails />} />
+
+          {/* permitir apenas para admin e recepcionista */}
+          <Route element={<RequireRole allowedRoles={["admin", "recepcionista"]} />}>
+            <Route path="schedule" element={<ScheduleForm />} />
+            <Route path="medicos" element={<MedicosPage />} />
+            <Route path="pacientes" element={<PacientesPage />} />
+          </Route>
+        </Route>
+      )}
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

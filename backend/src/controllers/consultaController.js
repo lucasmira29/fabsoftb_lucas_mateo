@@ -40,6 +40,7 @@ class consultaController {
       res.status(200).json(consultas);
     } catch (error) {
       res.status(500).json({ message: 'Erro ao listar consultas', error });
+      console.error(error);
     }
   }
 

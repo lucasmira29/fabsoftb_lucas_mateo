@@ -4,6 +4,7 @@ import SelectInput from "@/components/SelectInput";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import useAuth from "@/hooks/useAuthContext";
 import api from "@/services/api";
 import type { Consulta } from "@/types/consulta";
 import { format } from "date-fns";
@@ -24,6 +25,8 @@ function ConsultaDetails() {
   const [novaData, setNovaData] = useState<Date | undefined>();
   const [novoHorario, setNovoHorario] = useState<string>("");
   const [horariosDisponiveis, setHorariosDisponiveis] = useState<string[]>([]);
+
+  const { user } = useAuth();
 
   const navigate = useNavigate();
 
@@ -57,7 +60,7 @@ function ConsultaDetails() {
       const response = await api.get(`/consultas/${id}`);
       setConsulta(response.data);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
   }
 
@@ -111,9 +114,11 @@ function ConsultaDetails() {
 
     try {
       const novaDataFormatada = format(novaData, "yyyy-MM-dd");
-      
+
       await api.put(`/consultas/${id}`, {
-        date_time: new Date(`${novaDataFormatada}T${novoHorario}:00`).toISOString(),
+        date_time: new Date(
+          `${novaDataFormatada}T${novoHorario}:00`
+        ).toISOString(),
         status: "agendado",
       });
 
@@ -278,29 +283,36 @@ function ConsultaDetails() {
 
           {consulta.status === "agendado" && (
             <div className="flex flex-wrap justify-end gap-3 mt-12">
-              <Button
-                variant="outline"
-                className="cursor-pointer min-w-[120px]"
-                onClick={() => setIsOpenRemarcar(true)}
-              >
-                Remarcar
-              </Button>
+              {user?.role !== "medico" && (
+                <>
+                  <Button
+                    variant="outline"
+                    className="cursor-pointer min-w-[120px]"
+                    onClick={() => setIsOpenRemarcar(true)}
+                  >
+                    Remarcar
+                  </Button>
 
-              <Button
-                variant="destructive"
-                className="cursor-pointer min-w-[120px]"
-                onClick={() => setIsOpenCancelar(true)}
-              >
-                Cancelar
-              </Button>
+                  <Button
+                    variant="destructive"
+                    className="cursor-pointer min-w-[120px]"
+                    onClick={() => setIsOpenCancelar(true)}
+                  >
+                    Cancelar
+                  </Button>
+                </>
+              )}
 
-              <Button
-                className="flex items-center gap-2 cursor-pointer bg-green-500 hover:bg-green-700 text-white min-w-[120px]"
-                onClick={() => setIsOpen(true)}
-              >
-                <Check className="w-4 h-4" />
-                Confirmar
-              </Button>
+  
+              {user?.role === "medico" && (
+                <Button
+                  className="flex items-center gap-2 cursor-pointer bg-green-500 hover:bg-green-700 text-white min-w-[120px]"
+                  onClick={() => setIsOpen(true)}
+                >
+                  <Check className="w-4 h-4" />
+                  Confirmar Realização
+                </Button>
+              )}
             </div>
           )}
         </div>

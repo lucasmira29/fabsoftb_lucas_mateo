@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import type { EventInput } from '@fullcalendar/core';
+// Tipos mais específicos para os eventos do FullCalendar
+import type { EventInput, EventContentArg, EventClickArg } from '@fullcalendar/core';
 import { useEffect, useState } from 'react';
 import api from '@/services/api';
 import type { Consulta } from '@/types/consulta';
@@ -17,8 +17,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useNavigate } from 'react-router';
+import { useDebounce } from '@/hooks/useDebounce';
 import './agenda.css';
-import { Check } from 'lucide-react';
 
 type ConsultaEvent = EventInput & {
   extendedProps: {
@@ -31,68 +31,74 @@ type ConsultaEvent = EventInput & {
   };
 };
 
-type dataInfoType = {
+type DataInfoType = {
   start: string;
   end: string;
 };
 
 export default function Agenda() {
   const [events, setEvents] = useState<ConsultaEvent[]>([]);
-  const [selectedEvent, setSelectedEvent] = useState<ConsultaEvent | null>(
-    null
-  );
-  const [dataInfo, setDataInfo] = useState<dataInfoType>();
+  const [selectedEvent, setSelectedEvent] = useState<ConsultaEvent | null>(null);
+  const [dataInfo, setDataInfo] = useState<DataInfoType | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState('');
   const [pacienteFilter, setPacienteFilter] = useState('');
+  
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const debouncedPacienteFilter = useDebounce(pacienteFilter, 500);
+
+  const isFiltered = statusFilter !== '' || pacienteFilter !== '';
 
   useEffect(() => {
     async function fetchConsultas() {
       if (!dataInfo) return;
 
-      const query = user?.role === 'medico' ? `medicoId=${user.id}` : '';
-      const statusQuery = statusFilter ? `&status=${statusFilter}` : '';
+      setEvents([]);
 
       try {
-        const response = await api.get(
-          `/consultas?${query}&dataInicio=${dataInfo.start}&dataFim=${dataInfo.end}${statusQuery}`
-        );
+        const params = new URLSearchParams({
+          dataInicio: dataInfo.start,
+          dataFim: dataInfo.end,
+        });
 
-        const data = await response.data;
+        if (user?.role === 'medico') {
+          params.append('medicoId', user.id.toString());
+        }
+        if (statusFilter) {
+          params.append('status', statusFilter);
+        }
+        if (debouncedPacienteFilter) {
+          params.append('paciente', debouncedPacienteFilter);
+        }
 
-        const mappedEvents: ConsultaEvent[] = data.consultas
-          .filter((consulta: Consulta) =>
-            pacienteFilter
-              ? consulta.paciente.user.name
-                  .toLowerCase()
-                  .includes(pacienteFilter.toLowerCase())
-              : true
-          )
-          .map((consulta: Consulta) => ({
-            title: `${consulta.paciente.user.name}`,
-            start: consulta.date_time,
-            extendedProps: {
-              consultaId: consulta.id,
-              status: consulta.status,
-              medico: consulta.medico.user.name,
-              paciente: consulta.paciente.user.name,
-              telefone: consulta.paciente.user.phone,
-              email: consulta.paciente.user.email,
-            },
-          }));
+        const response = await api.get(`/consultas?${params.toString()}`);
+        const data = response.data;
+
+        const mappedEvents: ConsultaEvent[] = data.consultas.map((consulta: Consulta) => ({
+          title: consulta.paciente.user.name,
+          start: consulta.date_time,
+          extendedProps: {
+            consultaId: consulta.id,
+            status: consulta.status,
+            medico: consulta.medico.user.name,
+            paciente: consulta.paciente.user.name,
+            telefone: consulta.paciente.user.phone,
+            email: consulta.paciente.user.email,
+          },
+        }));
 
         setEvents(mappedEvents);
       } catch (error) {
-        console.error(error);
+        console.error("Erro ao buscar consultas para a agenda:", error);
       }
     }
 
     fetchConsultas();
-  }, [dataInfo, statusFilter, pacienteFilter]);
+  }, [dataInfo, statusFilter, debouncedPacienteFilter, user]);
 
-  function renderEventContent(eventInfo: any) {
+  function renderEventContent(eventInfo: EventContentArg) {
     const status = eventInfo.event.extendedProps.status;
     const statusColorMap = {
       agendado: 'bg-blue-500',
@@ -100,10 +106,8 @@ export default function Agenda() {
       cancelado: 'bg-red-500',
     } as const;
 
-    const dotColor =
-      statusColorMap[status as keyof typeof statusColorMap] || 'bg-gray-400';
-
-    const hora = new Date(eventInfo.event.start).toLocaleTimeString('pt-BR', {
+    const dotColor = statusColorMap[status as keyof typeof statusColorMap] || 'bg-gray-400';
+    const hora = new Date(eventInfo.event.start!).toLocaleTimeString('pt-BR', {
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -118,8 +122,8 @@ export default function Agenda() {
       </div>
     );
   }
-
-  const handleEventClick = (info: any) => {
+  
+  const handleEventClick = (info: EventClickArg) => {
     const props = info.event.extendedProps as ConsultaEvent['extendedProps'];
     setSelectedEvent({
       title: info.event.title,
@@ -137,34 +141,35 @@ export default function Agenda() {
   return (
     <div className="flex flex-col items-center justify-center w-full sm:p-6 p-0">
       <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 mb-6">
-        <Select onValueChange={setStatusFilter} value={statusFilter}>
-          <SelectTrigger className="w-full md:w-48">
-            <SelectValue placeholder="Filtrar por status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="agendado">Agendado</SelectItem>
-            <SelectItem value="realizado">Realizado</SelectItem>
-            <SelectItem value="cancelado">Cancelado</SelectItem>
-          </SelectContent>
-        </Select>
-
         <Input
           placeholder="Filtrar por paciente"
           value={pacienteFilter}
           onChange={(e) => setPacienteFilter(e.target.value)}
-          className="w-full"
+          className="flex-grow"
         />
+        <Select onValueChange={setStatusFilter} value={statusFilter}>
+          <SelectTrigger className="w-full md:w-48 cursor-pointer">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="agendado" className='cursor-pointer'>Agendado</SelectItem>
+            <SelectItem value="realizado" className='cursor-pointer'>Realizado</SelectItem>
+            <SelectItem value="cancelado" className='cursor-pointer'>Cancelado</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <Button onClick={handleClearFilters} variant="outline">
-          Limpar
-        </Button>
+        {isFiltered && (
+          <Button onClick={handleClearFilters} variant="outline" className='cursor-pointer'>
+            Limpar
+          </Button>
+        )}
       </div>
 
       <div className="w-full max-w-5xl bg-white p-4 rounded-2xl shadow-md overflow-auto">
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
-          weekends={false}
+          weekends
           locale="pt-br"
           events={events}
           eventContent={renderEventContent}
@@ -196,7 +201,6 @@ export default function Agenda() {
         />
       </div>
 
-      {/* Modal de detalhes */}
       <Modal
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}

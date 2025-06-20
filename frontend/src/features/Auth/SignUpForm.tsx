@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getToken } from '@/utils/handleToken';
 import { ArrowBigLeft } from 'lucide-react';
+import useAuth from '@/hooks/useAuthContext';
 
 const formSchema = z.object({
   name: z.string().min(3, 'Nome é obrigatório'),
@@ -65,19 +66,26 @@ function SignUpForm({ className, ...props }: React.ComponentProps<'div'>) {
 
   const [role, setRole] = useState<Role>();
   const [searchParams] = useSearchParams();
-  const [tipoCadastro, setTipoCadastro] = useState<string | null>(null);
+  const [tipoCadastro, setTipoCadastro] = useState<string | null>(null);  
+  const { user } = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const tipo = searchParams.get('type');
+     
     if (tipo) {
       setTipoCadastro(tipo);
       const token = getToken();
-      if (!token) {
+      
+      if (!token && !user) {
         toast.warn('Você precisa estar logado para cadastrar um paciente.');
         navigate('/login');
+      } else if (user?.role !== 'admin' && user?.role !== 'recepcionista') {
+        toast.warn('Você precisa ser um recepcionista ou administrador para cadastrar um paciente.');
+        navigate('/login');
       }
+      
     }
   }, [searchParams, navigate]);
 

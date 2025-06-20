@@ -10,7 +10,8 @@ import {
   User2,
   CalendarPlus,
   UserPlus,
-} from 'lucide-react';
+  Stethoscope, // Ícone mais adequado para "Minhas Consultas"
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -22,7 +23,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 
 import {
   DropdownMenu,
@@ -32,69 +33,90 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import useAuth from '@/hooks/useAuthContext';
-import { getInitials } from '@/utils/getInitials';
-import { useNavigate } from 'react-router';
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import useAuth from "@/hooks/useAuthContext";
+import { getInitials } from "@/utils/getInitials";
+import { NavLink, useNavigate } from "react-router";
 
-const items = [
+// Estrutura de itens aprimorada com `allowedRoles`
+const menuItems = [
   {
-    title: 'Home',
-    url: '/dashboard/home',
+    title: "Home",
+    url: "/dashboard/home",
     icon: Home,
   },
   {
-    title: 'Agenda',
-    url: '/dashboard/agenda',
+    title: "Agenda",
+    url: "/dashboard/agenda",
     icon: Calendar,
   },
   {
-    title: 'Agendar Consulta',
-    url: '/dashboard/schedule',
+    title: "Minhas Consultas",
+    url: "/dashboard/minhas-consultas",
+    icon: Stethoscope,
+    allowedRoles: ["medico"],
+  },
+  {
+    title: "Agendar Consulta",
+    url: "/dashboard/schedule",
     icon: CalendarPlus,
+    allowedRoles: ["admin", "recepcionista"],
   },
   {
-    title: 'Médicos',
-    url: '/dashboard/medicos',
+    title: "Médicos",
+    url: "/dashboard/medicos",
     icon: BriefcaseMedical,
+    allowedRoles: ["admin", "recepcionista"],
   },
   {
-    title: 'Pacientes',
-    url: '/dashboard/pacientes',
+    title: "Pacientes",
+    url: "/dashboard/pacientes",
     icon: UserRound,
+    allowedRoles: ["admin", "recepcionista"],
   },
   {
-    title: 'Cadastrar Paciente',
-    url: '/cadastro?type=paciente',
+    title: "Cadastrar Paciente",
+    url: "/cadastro?type=paciente",
     icon: UserPlus,
+    allowedRoles: ["admin", "recepcionista"], 
   },
   {
-    title: 'Configurações',
-    url: '/dashboard/config',
+    title: "Configurações",
+    url: "/dashboard/config",
     icon: Settings,
   },
 ];
 
 export function AppSidebar() {
-  
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  
+
+  const visibleItems = menuItems.filter((item) => {
+    // Se o item não tem `allowedRoles`, ele é público para todos os logados.
+    if (!item.allowedRoles) {
+      return true;
+    }
+    // Se o usuário tem uma `role` e ela está na lista de `allowedRoles`, mostra o item.
+    return user?.role && item.allowedRoles.includes(user.role);
+  });
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {visibleItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+                    <NavLink to={item.url} className={({ isActive }) =>
+                      isActive ? "bg-sidebar-accent text-sidebar-accent-foreground" : ""
+                    }>
+                      <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
-                    </a>
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -103,60 +125,50 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu >
+        <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
-              <DropdownMenuTrigger className='cursor-pointer' asChild>
+              <DropdownMenuTrigger className="cursor-pointer w-full" asChild>
                 <SidebarMenuButton
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage src="" alt={user?.name} />
-                    <AvatarFallback className="rounded-lg">{getInitials(user?.name)}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">
+                      {getInitials(user?.name)}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user?.name}</span>
-                    <span className="truncate text-xs">{user?.email}</span>
+                    <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-              // className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-              // side={isMobile ? "bottom" : "right"}
-              // align="end"
-              // sideOffset={4}
-              >
-                <DropdownMenuLabel className="p-0 font-normal">
-                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src="alt={user?.name}" alt={user?.name} />
-                      <AvatarFallback className="rounded-lg">{getInitials(user?.name)}</AvatarFallback>
-                    </Avatar>
-                    <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">{user?.name}</span>
-                      <span className="truncate text-xs">{user?.email}</span>
-                    </div>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup></DropdownMenuGroup>
+              <DropdownMenuContent className="w-64 mb-2 ml-2">
+                <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem className='cursor-pointer' onClick={() => navigate('/dashboard/account')}>
-                    <User2 />
-                    Conta
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => navigate("/dashboard/account")}
+                  >
+                    <User2 className="mr-2 h-4 w-4" />
+                    <span>Perfil</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className='cursor-pointer'>
-                    <Bell />
-                    Notificações
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Bell className="mr-2 h-4 w-4" />
+                    <span>Notificações</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer' onClick={() => logout()}>
-                  <LogOut />
-                    Sair
+                <DropdownMenuItem
+                  className="cursor-pointer focus:text-red-600"
+                  onClick={() => logout()}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
