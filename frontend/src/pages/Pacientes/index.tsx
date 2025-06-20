@@ -19,7 +19,7 @@ function PacientesPage() {
   useEffect(() => {
     async function fetchPacientes() {
       try {
-        const response = await api.get(`/pacientes?page=${page}`);
+        const response = await api.get(`/pacientes?page=${page}&limit=9`);
         setPacienteData(response.data.pacientes);
         setTotalPages(response.data.totalPages);
       } catch (error) {

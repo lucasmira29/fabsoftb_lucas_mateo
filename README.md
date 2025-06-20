@@ -74,11 +74,17 @@ Sistema para gerenciar o agendamento de consultas dermatológicas com funcionali
 
 ---
 
+Claro! Aqui está a seção **"⚙️ Como Rodar o Projeto"** atualizada, incluindo as instruções completas para **backend** e **frontend**, com formatação consistente:
+
+---
+
 ## ⚙️ Como Rodar o Projeto
 
 ### ▶️ Ambiente Local
 
-1. Acesse a pasta do backend:
+#### 🔧 Backend
+
+1. Navegue até a pasta do backend:
 
    ```bash
    cd backend
@@ -90,9 +96,9 @@ Sistema para gerenciar o agendamento de consultas dermatológicas com funcionali
    npm install
    ```
 
-3. Crie um arquivo .env com base no .envExample:
+3. Crie um arquivo `.env` com base no `.env.example`:
 
-   ```
+   ```env
    DATABASE_URL=mysql://USER:PASSWORD@HOST:PORT/DATABASE
    ```
 
@@ -110,18 +116,85 @@ Sistema para gerenciar o agendamento de consultas dermatológicas com funcionali
 
 ---
 
+#### 💻 Frontend
+
+1. Navegue até a pasta do frontend:
+
+   ```bash
+   cd frontend
+   ```
+
+2. Instale as dependências:
+
+   ```bash
+   npm install
+   ```
+
+3. Crie um arquivo `.env` com base no `.env.example` (opcional):
+
+   ```bash
+   VITE_API_URL=http://sua-api.com
+   ```
+
+4. Inicie o servidor de desenvolvimento:
+
+   ```bash
+   npm run dev
+   ```
+
+> Acesse [http://localhost:5173](http://localhost:5173) para utilizar o sistema no navegador.
+
+---
+
 ### 🐳 Usando Docker
 
-1. Acesse a pasta do backend:
+#### 1️⃣ Subir os Contêineres
 
-   ```bash
-   cd backend
-   ```
+A partir da **raiz do projeto**, execute:
 
-2. Execute o projeto com Docker Compose:
+```bash
+docker-compose up --build
+```
 
-   ```bash
-   docker-compose up --build
-   ```
+Este comando irá:
 
-3. Acesse a aplicação em: [http://localhost:3000](http://localhost:3000)
+* Construir as imagens do **frontend** e **backend**.
+* Iniciar três contêineres: `frontend`, `backend` e `banco de dados`.
+* Aplicar automaticamente as **migrações** do banco de dados.
+* Executar o script de **seed** para popular com dados de exemplo (médicos, pacientes etc.).
+
+---
+
+#### 2️⃣ Acessar a Aplicação
+
+Após a conclusão do processo, os serviços estarão disponíveis em:
+
+* **Frontend:** [http://localhost:5173](http://localhost:5173)
+* **Backend (API):** `http://localhost:3000`
+
+> Acesse o endereço do frontend para utilizar o sistema.
+
+---
+
+#### 3️⃣ Credenciais para Teste
+
+Todos os usuários possuem a mesma senha de acesso: `123456`
+
+| Perfil            | E-mail de Login            |
+| ----------------- | -------------------------- |
+| 🛠️ Administrador | `admin@clinica.com`        |
+| 🩺 Médico         | `isadora.lima@clinica.com` |
+| 💼 Recepcionista  | `ana.ribeiro@clinica.com`  |
+
+---
+
+#### 4️⃣ Parar os Contêineres
+
+Para encerrar a aplicação, use:
+
+1. Pressione `Ctrl + C` no terminal em execução.
+2. Em seguida, rode:
+
+```bash
+docker-compose down
+```

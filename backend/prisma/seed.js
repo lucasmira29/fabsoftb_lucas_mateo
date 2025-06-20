@@ -5,138 +5,149 @@ const prisma = new PrismaClient();
 
 
 async function main() {
+  console.log('Iniciando o processo de seed...');
+
+  // --- 1. Limpeza do Banco de Dados ---
+  console.log('Limpando o banco de dados existente...');
+  await prisma.horarioMedico.deleteMany({});
+  await prisma.paciente.deleteMany({});
+  await prisma.medico.deleteMany({});
+  await prisma.recepcionista.deleteMany({});
+  await prisma.user.deleteMany({});
+  console.log('Banco de dados limpo.');
+
+  // --- 2. Criação de Senha Padrão ---
   const senhaPadrao = '123456';
+  const hashedPasswordPadrao = await hashPassword(senhaPadrao);
 
-  const adminPassword = await hashPassword(senhaPadrao);
-  const medicoPassword = await hashPassword(senhaPadrao);
-  const recepPassword = await hashPassword(senhaPadrao);
-
+  // --- 3. Criação de Usuários (Staff) ---
+  console.log('Criando usuário Administrador...');
   await prisma.user.create({
     data: {
-      name: 'Lucas Pereira',
-      document: '12345678901',
+      name: 'Admin Geral',
+      document: '11122233301',
       birthdate: new Date('1980-04-15'),
-      phone: '11987654321',
+      phone: '11999990001',
       postal_code: '01001000',
-      email: 'lucas.pereira@example.com',
-      password: adminPassword,
+      email: 'admin@clinica.com',
+      password: hashedPasswordPadrao,
       role: 'admin',
     },
   });
 
-  await prisma.user.create({
-    data: {
-      name: 'Mariana Santos',
-      document: '23456789012',
-      birthdate: new Date('1975-09-30'),
-      phone: '11981234567',
-      postal_code: '02002020',
-      email: 'mariana.santos@example.com',
-      password: medicoPassword,
-      role: 'medico',
-      Medico: {
-        create: {
-          specialty: 'Cardiologia',
+  console.log('Criando usuários Médicos...');
+  const medicosData = [
+    { name: 'Dra. Isadora Lima', document: '22233344402', email: 'isadora.lima@clinica.com', specialty: 'Dermatologia Clínica e Cirúrgica' },
+    { name: 'Dr. Roberto Fernandes', document: '33344455503', email: 'roberto.fernandes@clinica.com', specialty: 'Dermatologia Estética e Tricologia' },
+  ];
+
+  const medicosCriados = await Promise.all(
+    medicosData.map(medico =>
+      prisma.user.create({
+        data: {
+          name: medico.name,
+          document: medico.document,
+          birthdate: new Date('1985-09-20'),
+          phone: '11999990002',
+          postal_code: '02002020',
+          email: medico.email,
+          password: hashedPasswordPadrao,
+          role: 'medico',
+          Medico: { create: { specialty: medico.specialty } },
         },
-      },
-    },
-  });
+      }),
+    ),
+  );
 
-  await prisma.user.create({
-    data: {
-      name: 'Ana Cláudia Ribeiro',
-      document: '34567890123',
-      birthdate: new Date('1990-12-10'),
-      phone: '11983456789',
-      postal_code: '03003030',
-      email: 'ana.ribeiro@example.com',
-      password: recepPassword,
-      role: 'recepcionista',
-      Recepcionista: {
-        create: {},
-      },
-    },
-  });
+  console.log('Criando usuários Recepcionistas...');
+  const recepcionistasData = [
+    { name: 'Ana Cláudia Ribeiro', document: '44455566604', email: 'ana.ribeiro@clinica.com' },
+    { name: 'Carlos Eduardo', document: '55566677705', email: 'carlos.eduardo@clinica.com' },
+  ];
 
-  const pacientes = [
+  await Promise.all(
+    recepcionistasData.map(recep =>
+      prisma.user.create({
+        data: {
+          name: recep.name,
+          document: recep.document,
+          birthdate: new Date('1995-01-01'),
+          phone: '11999990004',
+          postal_code: '03003030',
+          email: recep.email,
+          password: hashedPasswordPadrao,
+          role: 'recepcionista',
+          Recepcionista: { create: {} },
+        },
+      }),
+    ),
+  );
+
+  // --- 4. Criação de Pacientes ---
+  console.log('Criando usuários Pacientes...');
+  const pacientesData = [
+    { name: 'João Carlos Almeida', document: '12345678901', email: 'joao.almeida@example.com', history: 'Histórico de acne cística na adolescência', allergies: 'Penicilina' },
+    { name: 'Mariana Oliveira', document: '23456789012', email: 'mariana.oliveira@example.com', history: 'Psoríase em placas, controlada', allergies: 'Fragrâncias em cosméticos' },
+    { name: 'Felipe Souza', document: '34567890123', email: 'felipe.souza@example.com', history: 'Dermatite atópica desde a infância', allergies: 'Ácaros' },
+    { name: 'Leticia Barros', document: '45678901234', email: 'leticia.barros@example.com', history: 'Cicatrizes de acne', allergies: 'Ibuprofeno' },
+    { name: 'Bruno Gomes', document: '56789012345', email: 'bruno.gomes@example.com', history: 'Dermatite de contato a metais', allergies: 'Níquel' },
+    { name: 'Clara Azevedo', document: '67890123456', email: 'clara.azevedo@example.com', history: 'Acompanhamento de vitiligo', allergies: 'Nenhuma conhecida' },
+    { name: 'Ricardo Dias', document: '78901234567', email: 'ricardo.dias@example.com', history: 'Excesso de sudorese (hiperidrose)', allergies: 'Pólen' },
+    { name: 'Vanessa Nunes', document: '89012345678', email: 'vanessa.nunes@example.com', history: 'Manchas solares (melanoses) nas mãos', allergies: 'Gatos' },
+    { name: 'Thiago Moreira', document: '90123456789', email: 'thiago.moreira@example.com', history: 'Foliculite na região da barba', allergies: 'Nenhuma conhecida' },
+    { name: 'Juliana Castro', document: '01234567890', email: 'juliana.castro@example.com', history: 'Unhas frágeis e quebradiças', allergies: 'Esmaltes com formaldeído' },
+    { name: 'Eduardo Santos', document: '11223344556', email: 'eduardo.santos@example.com', history: 'Revisão de pinta suspeita no ombro', allergies: 'Amendoim' },
+  ];
+
+  await Promise.all(
+    pacientesData.map(paciente =>
+      prisma.user.create({
+        data: {
+          name: paciente.name,
+          document: paciente.document,
+          birthdate: new Date('1992-05-18'),
+          phone: `1198${paciente.document.substring(0, 7)}`,
+          postal_code: '04004040',
+          email: paciente.email,
+          password: hashedPasswordPadrao,
+          role: 'paciente',
+          Paciente: { create: { history: paciente.history, allergies: paciente.allergies } },
+        },
+      }),
+    ),
+  );
+
+  // --- 5. Criação de Horários dos Médicos ---
+  console.log('Criando Horários de trabalho dos médicos...');
+  const medico1Id = medicosCriados[0].id;
+  const medico2Id = medicosCriados[1].id;
+
+  const horariosParaCriar = [
+    // Horário para Dra. Isadora Lima (Ex: 08:00 às 18:00)
     {
-      name: 'João Carlos Almeida',
-      document: '45678901234',
-      birthdate: new Date('1992-07-21'),
-      phone: '11986543210',
-      postal_code: '04004040',
-      email: 'joao.almeida@example.com',
-      history: 'Hipertensão controlada',
-      allergies: 'Penicilina',
+      medico_id: medico1Id,
+      start_time: new Date('1970-01-01T08:00:00Z'),
+      end_time: new Date('1970-01-01T18:00:00Z'),
     },
+    // Horário para Dr. Roberto Fernandes (Ex: 10:00 às 19:00)
     {
-      name: 'Mariana Oliveira',
-      document: '56789012345',
-      birthdate: new Date('1988-11-05'),
-      phone: '11985432109',
-      postal_code: '05005050',
-      email: 'mariana.oliveira@example.com',
-      history: 'Diabetes tipo 2',
-      allergies: 'Nenhuma',
-    },
-    {
-      name: 'Felipe Souza',
-      document: '67890123456',
-      birthdate: new Date('1995-03-15'),
-      phone: '11984321098',
-      postal_code: '06006060',
-      email: 'felipe.souza@example.com',
-      history: 'Asma leve',
-      allergies: 'Ácaros',
-    },
-    {
-      name: 'Beatriz Lima',
-      document: '78901234567',
-      birthdate: new Date('1990-08-25'),
-      phone: '11983210987',
-      postal_code: '07007070',
-      email: 'beatriz.lima@example.com',
-      history: 'Nenhuma',
-      allergies: 'Frutos do mar',
-    },
-    {
-      name: 'Rafael Mendes',
-      document: '89012345678',
-      birthdate: new Date('1985-01-18'),
-      phone: '11982109876',
-      postal_code: '08008080',
-      email: 'rafael.mendes@example.com',
-      history: 'Cirurgia cardíaca em 2018',
-      allergies: 'Sulfa',
+      medico_id: medico2Id,
+      start_time: new Date('1970-01-01T10:00:00Z'),
+      end_time: new Date('1970-01-01T19:00:00Z'),
     },
   ];
 
-  for (const paciente of pacientes) {
-    await prisma.user.create({
-      data: {
-        name: paciente.name,
-        document: paciente.document,
-        birthdate: paciente.birthdate,
-        phone: paciente.phone,
-        postal_code: paciente.postal_code,
-        email: paciente.email,
-        role: 'paciente',
-        Paciente: {
-          create: {
-            history: paciente.history,
-            allergies: paciente.allergies,
-          },
-        },
-      },
-    });
-  }
+  await prisma.horarioMedico.createMany({
+    data: horariosParaCriar,
+  });
 
+  console.log(`${horariosParaCriar.length} horários de trabalho criados.`);
   console.log('Seed concluído com sucesso!');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('Ocorreu um erro durante o processo de seed:', e);
     process.exit(1);
   })
   .finally(async () => {

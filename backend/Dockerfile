@@ -6,7 +6,8 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN apt-get update && apt-get install -y netcat-openbsd
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod +x /usr/local/bin/wait-for-it
 
 COPY . .
 

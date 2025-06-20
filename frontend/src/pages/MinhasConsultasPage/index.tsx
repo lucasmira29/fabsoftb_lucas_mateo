@@ -55,7 +55,7 @@ export default function MinhasConsultasPage() {
           params.append('paciente', debouncedPacienteFilter);
         }
         
-        const response = await api.get(`consultas?${params.toString()}`);
+        const response = await api.get(`consultas?${params.toString()}&limit=9`);
         
         setConsultas(response.data.consultas);
         setTotalPages(response.data.totalPage || 1);
