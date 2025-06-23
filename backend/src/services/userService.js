@@ -1,11 +1,10 @@
 import prisma from '../config/dbConfig.js';
 
 class userService {
-  static async getUserByCpfEmail(data) {
-    return await prisma.user.findFirst({
-      where: {
-        OR: [{ document: data.document }, { email: data.email }],
-      },
+  static async updateAdmin(id, newData) {
+    return await prisma.user.update({
+      where: { id, role: 'admin' },
+      data: newData,
     });
   }
 

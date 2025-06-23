@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => userController.listarUsuarios(req, res));
 router.get("/:id", (req, res) => userController.listarUsuarioPorId(req, res));
-router.post("/verify-user", (req, res) => userController.verificarEmailOuCpf(req, res));
+router.put("/admin/:id", (req, res) => userController.atualizarAdmin(req, res));
 router.post('/login', (req, res) => userController.login(req, res));
 
 export default router;

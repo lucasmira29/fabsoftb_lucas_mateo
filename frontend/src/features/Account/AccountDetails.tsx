@@ -51,11 +51,11 @@ function AccountDetails() {
       case 'medico':
         endpoint = 'medicos';
         break;
-      case 'paciente':
-        endpoint = 'pacientes';
+      case 'recepcionista':
+        endpoint = 'recepcionistas';
         break;
       default:
-        endpoint = 'usuarios';
+        endpoint = 'usuarios/admin';
         break;
     }
 
