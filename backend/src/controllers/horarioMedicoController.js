@@ -1,7 +1,7 @@
 import horarioMedicoService from '../services/horarioMedicoService.js';
-import { parse } from 'date-fns';
 
 class HorarioMedicoController {
+
   static async criarHorario(req, res) {
     try {
       const { medico_id, start_time, end_time } = req.body;
@@ -12,13 +12,10 @@ class HorarioMedicoController {
           .json({ message: 'Campos obrigatórios faltando.' });
       }
 
-      const parsedStart = parse(start_time, 'HH:mm', new Date(0));
-      const parsedEnd = parse(end_time, 'HH:mm', new Date(0));
-
       const data = {
         medico_id,
-        start_time: parsedStart,
-        end_time: parsedEnd,
+        start_time, 
+        end_time,  
       };
 
       const horario = await horarioMedicoService.create(data);
@@ -31,7 +28,6 @@ class HorarioMedicoController {
   static async listarHorarios(req, res) {
     try {
       const horarios = await horarioMedicoService.getAll();
-
       return res.status(200).json(horarios);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -41,13 +37,10 @@ class HorarioMedicoController {
   static async listarHorarioMedicoId(req, res) {
     try {
       const { id } = req.params;
-
       const horario = await horarioMedicoService.getById(Number(id));
-
       if (!horario) {
         return res.status(200).json([]);
       }
-
       res.status(200).json(horario);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -57,25 +50,19 @@ class HorarioMedicoController {
   static async atualizarHorario(req, res) {
     try {
       const { id } = req.params;
-
       const { medico_id, start_time, end_time } = req.body;
-
-      const parsedStart = parse(start_time, 'HH:mm', new Date(0));
-      const parsedEnd = parse(end_time, 'HH:mm', new Date(0));
 
       const data = {
         medico_id,
-        start_time: parsedStart,
-        end_time: parsedEnd,
+        start_time,
+        end_time,
       };
 
       const horario = await horarioMedicoService.update(id, data);
-
       if (!horario) {
-        return res.status(404).json({ message: 'Erro ao atualizar horário:' });
+        return res.status(404).json({ message: 'Erro ao atualizar horário.' });
       }
-
-      res.status(200).json({ message: 'Horário atualizado com sucesso!' });
+      res.status(200).json({ message: 'Horário atualizado com sucesso!', horario });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -84,14 +71,11 @@ class HorarioMedicoController {
   static async deletarHorario(req, res) {
     try {
       const { id } = req.params;
-
       const deletado = await horarioMedicoService.delete(id);
-
       if (!deletado) {
         return res.status(404).json({ message: 'Erro ao deletar Horário' });
       }
-
-      return res.status(204).json({ message: 'Horário deletado com sucesso!' });
+      return res.status(204).send();
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

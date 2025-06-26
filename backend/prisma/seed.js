@@ -126,14 +126,14 @@ async function main() {
     // Horário para Dra. Isadora Lima (Ex: 08:00 às 18:00)
     {
       medico_id: medico1Id,
-      start_time: new Date('1970-01-01T08:00:00Z'),
-      end_time: new Date('1970-01-01T18:00:00Z'),
+      start_time: "08:00",
+      end_time: "18:00",
     },
     // Horário para Dr. Roberto Fernandes (Ex: 10:00 às 19:00)
     {
       medico_id: medico2Id,
-      start_time: new Date('1970-01-01T10:00:00Z'),
-      end_time: new Date('1970-01-01T19:00:00Z'),
+      start_time:  "10:00",
+      end_time: "19:00",
     },
   ];
 

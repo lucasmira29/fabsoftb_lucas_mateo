@@ -3,6 +3,7 @@ import prisma from '../config/dbConfig.js';
 import { addMinutes, endOfDay, format, startOfDay } from 'date-fns';
 
 class horarioMedicoService {
+  
   static async getAll() {
     const horarios = await prisma.horarioMedico.findMany({
       select: {
@@ -13,14 +14,7 @@ class horarioMedicoService {
       },
     });
 
-    const horariosFormatados = horarios.map((h) => ({
-      id: h.id,
-      medico_id: h.medico_id,
-      start_time: format(h.start_time, 'HH:mm'),
-      end_time: format(h.end_time, 'HH:mm'),
-    }));
-
-    return horariosFormatados;
+    return horarios;
   }
 
   static async getById(id) {
@@ -36,14 +30,7 @@ class horarioMedicoService {
 
     if (!horarios || horarios.length === 0) return null;
 
-    const horariosFormatados = horarios.map((h) => ({
-      id: h.id,
-      medico_id: h.medico_id,
-      start_time: format(h.start_time, 'HH:mm'),
-      end_time: format(h.end_time, 'HH:mm'),
-    }));
-
-    return horariosFormatados;
+    return horarios;
   }
 
   static async create(data) {
@@ -74,12 +61,6 @@ class horarioMedicoService {
   static async getHorariosDisponiveis(medico_id, dataString) {
     const timeZone = 'America/Sao_Paulo';
 
-    // Interpreta a string de data (ex: '2025-06-18') como o início do dia no fuso horário alvo.
-    const dataAlvo = toZonedTime(`${dataString}T00:00:00`, timeZone);
-
-    const inicioDoDia = startOfDay(dataAlvo);
-    const fimDoDia = endOfDay(dataAlvo);
-
     const horariosTrabalho = await prisma.horarioMedico.findMany({
       where: { medico_id },
     });
@@ -87,6 +68,10 @@ class horarioMedicoService {
     if (!horariosTrabalho.length) {
       return [];
     }
+
+    const dataAlvo = toZonedTime(`${dataString}T00:00:00`, timeZone);
+    const inicioDoDia = startOfDay(dataAlvo);
+    const fimDoDia = endOfDay(dataAlvo);
 
     const consultasDoDia = await prisma.consulta.findMany({
       where: {
@@ -98,7 +83,6 @@ class horarioMedicoService {
       },
     });
 
-    // Cria um conjunto com os horários já agendados, formatados em 'HH:mm' no fuso correto.
     const consultasMarcadas = new Set(
       consultasDoDia.map(c => {
         const zoned = toZonedTime(c.date_time, timeZone);
@@ -109,17 +93,14 @@ class horarioMedicoService {
     const horariosDisponiveis = [];
 
     for (const h of horariosTrabalho) {
-      // Define o início e o fim do expediente para a data alvo, usando as horas UTC do banco de dados.
-      let slotAtual = new Date(dataAlvo);
-      slotAtual.setUTCHours(h.start_time.getUTCHours(), h.start_time.getUTCMinutes(), 0, 0);
+      const startISOString = `${dataString}T${h.start_time}:00`;
+      const endISOString = `${dataString}T${h.end_time}:00`;
 
-      const fimDoExpediente = new Date(dataAlvo);
-      fimDoExpediente.setUTCHours(h.end_time.getUTCHours(), h.end_time.getUTCMinutes(), 0, 0);
+      let slotAtual = toZonedTime(startISOString, timeZone);
+      const fimDoExpediente = toZonedTime(endISOString, timeZone);
 
-      // Itera sobre os slots de tempo do expediente para gerar os horários disponíveis.
       while (slotAtual < fimDoExpediente) {
-        // Formata o slot de horário no fuso correto para fazer a comparação.
-        const horaFormatada = format(toZonedTime(slotAtual, timeZone), 'HH:mm');
+        const horaFormatada = format(slotAtual, 'HH:mm');
 
         if (!consultasMarcadas.has(horaFormatada)) {
           horariosDisponiveis.push(horaFormatada);
@@ -131,7 +112,6 @@ class horarioMedicoService {
 
     return horariosDisponiveis;
   }
-
 }
 
 export default horarioMedicoService;
