@@ -45,7 +45,7 @@ class HorarioMedicoController {
       const horario = await horarioMedicoService.getById(Number(id));
 
       if (!horario) {
-        return res.status(404).json({ message: 'Nenhum horário encontrado para o médico informado.' });
+        return res.status(200).json([]);
       }
 
       res.status(200).json(horario);

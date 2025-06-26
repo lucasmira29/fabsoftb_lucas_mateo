@@ -6,6 +6,7 @@ export type User = {
   password?: string;
   document: string;
   birthdate: Date;
+  role: Role;
   phone?: string;
   postal_code: string;
   specialty?: string | null;

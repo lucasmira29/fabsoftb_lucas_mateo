@@ -125,7 +125,7 @@ class horarioMedicoService {
           horariosDisponiveis.push(horaFormatada);
         }
 
-        slotAtual = addMinutes(slotAtual, 30);
+        slotAtual = addMinutes(slotAtual, 60);
       }
     }
 

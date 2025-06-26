@@ -72,12 +72,6 @@ Sistema para gerenciar o agendamento de consultas dermatológicas com funcionali
   <img src="./database_diagram.png" width="800" alt="Diagrama do banco de dados">
 </div>
 
----
-
-Claro! Aqui está a seção **"⚙️ Como Rodar o Projeto"** atualizada, incluindo as instruções completas para **backend** e **frontend**, com formatação consistente:
-
----
-
 ## ⚙️ Como Rodar o Projeto
 
 ### ▶️ Ambiente Local
