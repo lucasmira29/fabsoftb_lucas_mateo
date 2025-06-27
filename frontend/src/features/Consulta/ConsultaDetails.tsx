@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useAuth from "@/hooks/useAuthContext";
 import api from "@/services/api";
 import type { Consulta } from "@/types/consulta";
+import { formatPhone } from "@/utils/formatters";
 import { format } from "date-fns";
 import { ArrowLeft, Check } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -196,7 +197,7 @@ function ConsultaDetails() {
               </p>
               <p>
                 <span className="font-medium text-zinc-700">Telefone:</span>{" "}
-                {consulta?.paciente.user.phone}
+                {formatPhone(consulta?.paciente.user.phone)}
               </p>
               <p>
                 <span className="font-medium text-zinc-700">Email:</span>{" "}
@@ -232,7 +233,7 @@ function ConsultaDetails() {
               </p>
               <p>
                 <span className="font-medium text-zinc-700">Telefone:</span>{" "}
-                {consulta?.medico.user.phone}
+                {formatPhone(consulta?.medico.user.phone)}
               </p>
               <p>
                 <span className="font-medium text-zinc-700">Email:</span>{" "}
