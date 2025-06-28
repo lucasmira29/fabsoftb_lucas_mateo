@@ -81,11 +81,6 @@ const menuItems = [
     icon: UserPlus,
     allowedRoles: ["admin", "recepcionista"], 
   },
-  {
-    title: "Configurações",
-    url: "/dashboard/config",
-    icon: Settings,
-  },
 ];
 
 export function AppSidebar() {
@@ -93,11 +88,11 @@ export function AppSidebar() {
   const navigate = useNavigate();
 
   const visibleItems = menuItems.filter((item) => {
-    // Se o item não tem `allowedRoles`, ele é público para todos os logados.
+
     if (!item.allowedRoles) {
       return true;
     }
-    // Se o usuário tem uma `role` e ela está na lista de `allowedRoles`, mostra o item.
+    
     return user?.role && item.allowedRoles.includes(user.role);
   });
 

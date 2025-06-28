@@ -179,19 +179,18 @@ function AccountDetails() {
             </>
           )}
 
-          {/* --- BOTÕES DE AÇÃO (CORRIGIDOS) --- */}
           <div className="flex justify-end gap-4 pt-4">
             {isEditing && (
               <Button
-                variant="destructive" // CORRIGIDO: Voltando para 'destructive'
-                className="cursor-pointer" // CORRIGIDO: Adicionando cursor-pointer
+                variant="destructive"
+                className="cursor-pointer"
                 onClick={handleCancel}
               >
                 Cancelar
               </Button>
             )}
             <Button
-              className={ // CORRIGIDO: Restaurando a lógica de classes original
+              className={
                 isEditing
                   ? 'cursor-pointer bg-green-500 hover:bg-green-400'
                   : 'cursor-pointer'
