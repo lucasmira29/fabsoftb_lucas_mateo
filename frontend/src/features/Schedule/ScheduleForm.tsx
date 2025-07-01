@@ -8,6 +8,14 @@ import api from "@/services/api";
 import { toast } from "react-toastify";
 import SelectInput from "@/components/SelectInput";
 import { DatePicker } from "@/components/DatePicker";
+import {
+  UserIcon,
+  BriefcaseIcon,
+  CalendarIcon,
+  ClockIcon,
+  PencilIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/outline";
 
 function ScheduleForm() {
   const [pacienteId, setPacienteId] = useState<number | null>(null);
@@ -20,10 +28,8 @@ function ScheduleForm() {
   useEffect(() => {
     setHorario("");
     setHorariosDisponiveis([]);
-
     async function fetchHorariosDisponiveis() {
       if (!medicoId || !date) return;
-
       try {
         const dataFormatada = format(date, "yyyy-MM-dd");
         const response = await api.get(
@@ -40,14 +46,11 @@ function ScheduleForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     if (!pacienteId || !medicoId || !date || !horario) {
       toast.warn("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
-
     const dataFormatada = format(date, "yyyy-MM-dd");
-
     const consultaData = {
       paciente_id: pacienteId,
       medico_id: medicoId,
@@ -55,7 +58,6 @@ function ScheduleForm() {
       status: "agendado",
       description: descricao,
     };
-
     try {
       const response = await api.post("/consultas", consultaData);
       setDate(undefined);
@@ -69,69 +71,100 @@ function ScheduleForm() {
   }
 
   return (
-    <div className="flex flex-col items-center px-4">
-      <h2 className="text-xl font-semibold mb-6 text-center">
-        Agendar Consulta
-      </h2>
-
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 w-full max-w-md"
-      >
-        <div className="flex flex-col gap-1">
-          <Label>Paciente</Label>
-          <SearchInput
-            SearchRole="pacientes"
-            placeholder="Digite o nome do paciente"
-            onSelect={(item) => {
-              setPacienteId(item.id);
-            }}
-          />
+    <div className="bg-slate-50 flex justify-center items-start min-h-screen p-4 sm:p-6 lg:p-8">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 w-full max-w-2xl">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-800">Agendar Nova Consulta</h2>
+          <p className="text-gray-500 mt-1">Preencha os dados abaixo para marcar um novo horário.</p>
         </div>
 
-        <div className="flex flex-col gap-1">
-          <Label>Médico</Label>
-          <SearchInput
-            SearchRole="medicos"
-            placeholder="Digite o nome do médico"
-            onSelect={(item) => setMedicoId(item.id)}
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <Label className="flex items-center text-sm font-medium">
+                <UserIcon className="h-4 w-4 mr-2 text-gray-500" />
+                Paciente*
+              </Label>
+              <SearchInput
+                SearchRole="pacientes"
+                placeholder="Digite para buscar um paciente..."
+                onSelect={(item) => setPacienteId(item.id)}
+              />
+            </div>
 
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="data">Data</Label>
-          <DatePicker date={date} setDate={setDate} />
-        </div>
+            <div className="flex flex-col gap-1.5">
+              <Label className="flex items-center text-sm font-medium">
+                <BriefcaseIcon className="h-4 w-4 mr-2 text-gray-500" />
+                Médico*
+              </Label>
+              <SearchInput
+                SearchRole="medicos"
+                placeholder="Digite para buscar um médico..."
+                onSelect={(item) => setMedicoId(item.id)}
+              />
+            </div>
+          </div>
+          
+          <hr/>
 
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="horario">Horário</Label>
-          <SelectInput
-            items={horariosDisponiveis}
-            placeholder={
-              horariosDisponiveis.length > 0
-                ? "Selecione um horário"
-                : "Selecione uma data e médico"
-            }
-            onChange={setHorario}
-          />
-        </div>
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="data" className="flex items-center text-sm font-medium">
+                  <CalendarIcon className="h-4 w-4 mr-2 text-gray-500" />
+                  Data da Consulta*
+                </Label>
+                <DatePicker date={date} setDate={setDate} />
+              </div>
 
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="descricao">Descrição</Label>
-          <Textarea
-            id="descricao"
-            name="descricao"
-            value={descricao}
-            placeholder="Descreva brevemente a razão da consulta"
-            onChange={(e) => setDescricao(e.target.value)}
-            className="bg-white"
-          />
-        </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="horario" className="flex items-center text-sm font-medium">
+                  <ClockIcon className="h-4 w-4 mr-2 text-gray-500" />
+                  Horário*
+                </Label>
+                <SelectInput
+                  items={horariosDisponiveis}
+                  value={horario}
+                  onChange={setHorario}
+                  disabled={horariosDisponiveis.length === 0}
+                  placeholder={
+                    !medicoId || !date
+                      ? "Selecione médico e data"
+                      : "Selecione um horário"
+                  }
+                />
+              </div>
+            </div>
+          </div>
+          
+          <hr/>
 
-        <Button type="submit" className="mt-4 w-full cursor-pointer">
-          Agendar
-        </Button>
-      </form>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="descricao" className="flex items-center text-sm font-medium">
+              <PencilIcon className="h-4 w-4 mr-2 text-gray-500" />
+              Descrição (Opcional)
+            </Label>
+            <Textarea
+              id="descricao"
+              name="descricao"
+              value={descricao}
+              placeholder="Motivo da consulta, sintomas, etc."
+              onChange={(e) => setDescricao(e.target.value)}
+              className="bg-white min-h-[100px]"
+            />
+          </div>
+
+          <Button
+            type="submit"
+            size="lg"
+            className="mt-4 w-full cursor-pointer"
+            disabled={!pacienteId || !medicoId || !date || !horario}
+          >
+            <PlusCircleIcon className="mr-2 h-5 w-5" />
+            Agendar Consulta
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }

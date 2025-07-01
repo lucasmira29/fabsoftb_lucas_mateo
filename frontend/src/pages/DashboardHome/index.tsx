@@ -7,6 +7,17 @@ import { ptBR } from 'date-fns/locale/pt-BR';
 import api from '@/services/api';
 import { AlertaHorarioPendente } from '@/components/AlertaHorarioPendente';
 
+// --- Ícones da biblioteca Heroicons ---
+import {
+  CalendarDaysIcon,
+  CheckBadgeIcon,
+  ClockIcon,
+  DocumentChartBarIcon,
+  CheckCircleIcon,
+  NoSymbolIcon,
+  ShieldCheckIcon,
+} from '@heroicons/react/24/outline';
+
 interface Consulta {
   id: string;
   date_time: string;
@@ -27,6 +38,19 @@ interface Consulta {
     };
   };
 }
+
+// Função auxiliar para estilizar o status da consulta
+const getStatusBadgeStyles = (status: string) => {
+  switch (status.toLowerCase()) {
+    case 'realizado':
+      return 'bg-green-100 text-green-800 ring-1 ring-inset ring-green-200';
+    case 'cancelado':
+      return 'bg-red-100 text-red-800 ring-1 ring-inset ring-red-200';
+    case 'agendado':
+    default:
+      return 'bg-blue-100 text-blue-800 ring-1 ring-inset ring-blue-200';
+  }
+};
 
 function DashboardHome() {
   const { user } = useAuth();
@@ -58,7 +82,6 @@ function DashboardHome() {
     const fetchConsultas = async () => {
       try {
         let res;
-
         if (user.role === 'medico') {
           verificarHorarioMedico();
           res = await api.get(`consultas/?medicoId=${user.id}&data=${hojeInicio}`);
@@ -67,7 +90,6 @@ function DashboardHome() {
         } else if (user.role === 'recepcionista' || user.role === 'admin') {
           res = await api.get(`consultas/?data=${hojeInicio}`);
         }
-
         if (res) setConsultasHoje(res.data.consultas || []);
       } catch (error) {
         console.error('Erro ao buscar consultas:', error);
@@ -106,151 +128,182 @@ function DashboardHome() {
 
   const getGreetingByRole = (role: string) => {
     switch (role) {
-      case 'admin':
-        return 'Bem-vindo(a), Administrador(a)';
-      case 'medico':
-        return 'Bem-vindo(a), Doutor(a)';
-      case 'recepcionista':
-        return 'Bem-vindo(a), Recepcionista';
-      default:
-        return 'Bem-vindo(a)';
+      case 'admin': return 'Bem-vindo(a), Administrador(a)';
+      case 'medico': return 'Bem-vindo(a), Doutor(a)';
+      case 'recepcionista': return 'Bem-vindo(a), Recepcionista';
+      default: return 'Bem-vindo(a)';
     }
   };
 
-  const dataHojeFormatada = format(new Date(), "EEEE, dd 'de' MMMM 'de' yyyy", {
-    locale: ptBR,
-  });
+  const dataHojeFormatada = format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR });
+
+  // Variantes para animação da lista
+  const listVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1 },
+  };
 
   return (
-    <section className="flex flex-col min-h-screen">
-      <div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, scale: { type: 'spring', bounce: 0.5 } }}
-          className="p-8 max-w-xl mx-auto bg-white rounded-2xl shadow-lg mt-10 text-center"
-        >
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            {getGreetingByRole(user.role)} 👋
-          </h2>
-          <p className="text-xl text-gray-600">
-            Que bom ter você aqui,{' '}
-            <span className="font-semibold">{user.name}</span>!
-          </p>
-        </motion.div>
-        
-        {horarioPendente && <AlertaHorarioPendente />}
+    <section className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      {/* CARD DE BOAS-VINDAS */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, type: 'spring', bounce: 0.3 }}
+        className="p-6 bg-white rounded-2xl shadow-lg border border-gray-200 border-t-4 border-t-indigo-500"
+      >
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
+          {getGreetingByRole(user.role)} 👋
+        </h2>
+        <p className="text-base sm:text-lg text-gray-600 mt-1">
+          Que bom ter você aqui, <span className="font-semibold">{user.name}</span>!
+        </p>
+        <p className="text-sm text-gray-500 mt-2 capitalize">
+          Hoje é {dataHojeFormatada}.
+        </p>
+      </motion.div>
+      
+      {horarioPendente && <AlertaHorarioPendente />}
 
-        {(user.role === 'medico' || user.role === 'recepcionista' || user.role === 'admin') && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="p-8 max-w-xl mx-auto bg-white rounded-2xl shadow-lg mt-6"
-          >
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              📅 Hoje é {dataHojeFormatada}
-            </h3>
-            <div>
-              <h4 className="text-lg font-semibold text-gray-700 mt-4 mb-2">
-                Consultas de hoje:
-              </h4>
+      {/* LAYOUT EM GRID PARA O CONTEÚDO PRINCIPAL */}
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* COLUNA PRINCIPAL (Consultas do Dia) */}
+        <div className="lg:col-span-2">
+          {(user.role === 'medico' || user.role === 'recepcionista' || user.role === 'admin') && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="p-6 bg-white rounded-2xl shadow-lg border border-gray-200 h-full"
+            >
+              <h3 className="flex items-center text-xl font-semibold text-gray-800 mb-4 pb-4 border-b">
+                <CalendarDaysIcon className="h-6 w-6 mr-3 text-indigo-600" />
+                Agenda de Hoje
+              </h3>
               {consultasHoje.length > 0 ? (
-                <ul className="space-y-3 text-left">
+                <motion.ul
+                  variants={listVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-3"
+                >
                   {consultasHoje.map((consulta) => (
-                    <li key={consulta.id} className="border rounded-xl p-4 shadow-sm hover:shadow-md transition">
-                      <p>
-                        <strong>
-                          🕐 {format(new Date(consulta.date_time), 'HH:mm')}
-                        </strong>{' '} - {consulta.paciente.user.name}
-                      </p>
-                      {user.role !== 'medico' && (
-                        <p className="text-md capitalize text-gray-700">
-                          <span className="font-semibold text-gray-800">Médico:</span>{' '}
-                          {consulta.medico.user.name}
-                        </p>
-                      )}
-                      <p className="text-sm text-gray-500 capitalize">
-                        Status: {consulta.status}
-                      </p>
-                    </li>
+                    <motion.li
+                      key={consulta.id}
+                      variants={itemVariants}
+                      className="flex items-center justify-between rounded-xl p-3 hover:bg-slate-50 transition-colors duration-200 border"
+                    >
+                      <div className="flex items-center">
+                        <div className="flex items-center justify-center bg-indigo-100 text-indigo-800 font-bold rounded-lg h-11 w-11 mr-4 text-xl">
+                          <ClockIcon className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800">{format(new Date(consulta.date_time), 'HH:mm')} - {consulta.paciente.user.name}</p>
+                          {user.role !== 'medico' && (
+                            <p className="text-sm text-gray-500">{consulta.medico.user.name}</p>
+                          )}
+                        </div>
+                      </div>
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${getStatusBadgeStyles(consulta.status)}`}>
+                        {consulta.status}
+                      </span>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
               ) : (
-                <p className="text-gray-500">Nenhuma consulta agendada para hoje.</p>
+                <div className="text-center py-10">
+                    <p className="text-gray-500">Nenhuma consulta agendada para hoje.</p>
+                    <p className="text-sm text-gray-400 mt-2">Aproveite para organizar suas tarefas!</p>
+                </div>
               )}
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
+        </div>
 
-        {user.role === 'medico' && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="p-6 max-w-xl mx-auto bg-green-50 border border-green-200 rounded-2xl shadow-md mt-6"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-green-800 mb-1">
-                  Consultas Realizadas
-                </h3>
+        {/* COLUNA LATERAL (Cards de Estatísticas) */}
+        <div className="space-y-8">
+          {user.role === 'medico' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="p-6 bg-white rounded-2xl shadow-lg border border-gray-200"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="text-base font-semibold text-gray-700">Total Realizadas</h3>
+                  <p className="text-xs text-gray-500">Seu histórico de atendimentos</p>
+                </div>
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <CheckBadgeIcon className="h-6 w-6 text-green-700" />
+                </div>
               </div>
-              <motion.div
-                className="text-3xl font-bold text-green-800"
+              <motion.p 
                 key={consultasRealizadas}
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 200 }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="text-4xl font-bold text-green-600 mt-4"
               >
                 {consultasRealizadas}
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
+              </motion.p>
+            </motion.div>
+          )}
 
-        {(user.role === 'recepcionista' || user.role === 'admin') && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="p-6 max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-md mt-6"
-          >
-            <h3 className="text-xl font-semibold text-gray-800 mb-6 border-b pb-2">
-              Resumo Geral de Consultas
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-              <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
-                <p className="text-sm text-gray-500 mb-1">Total de Consultas</p>
-                <p className="text-2xl font-bold text-gray-800">{totalConsultas}</p>
+          {(user.role === 'recepcionista' || user.role === 'admin') && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="p-6 bg-white rounded-2xl shadow-lg border border-gray-200"
+            >
+              <h3 className="flex items-center text-xl font-semibold text-gray-800 mb-4 pb-4 border-b">
+                <DocumentChartBarIcon className="h-6 w-6 mr-3 text-indigo-600" />
+                Resumo Geral
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="flex items-center text-sm font-medium text-gray-600"><ClockIcon className="h-5 w-5 mr-2 text-gray-400"/>Total de Consultas</p>
+                  <p className="text-lg font-bold text-gray-800">{totalConsultas}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="flex items-center text-sm font-medium text-green-700"><CheckCircleIcon className="h-5 w-5 mr-2"/>Realizadas</p>
+                  <p className="text-lg font-bold text-green-700">{totalRealizadas}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="flex items-center text-sm font-medium text-red-600"><NoSymbolIcon className="h-5 w-5 mr-2"/>Canceladas</p>
+                  <p className="text-lg font-bold text-red-600">{totalCanceladas}</p>
+                </div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
-                <p className="text-sm text-gray-500 mb-1">Realizadas</p>
-                <p className="text-2xl font-bold text-green-700">{totalRealizadas}</p>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
-                <p className="text-sm text-gray-500 mb-1">Canceladas</p>
-                <p className="text-2xl font-bold text-red-600">{totalCanceladas}</p>
-              </div>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
 
-        {user.role === 'admin' && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="p-6 max-w-xl mx-auto bg-blue-50 border border-blue-200 rounded-2xl shadow-md mt-6"
-          >
-            <h3 className="text-lg font-semibold text-blue-800 mb-2">
-              Painel do Administrador
-            </h3>
-            <p className="text-gray-700 text-sm">
-              Aqui você poderá em breve validar os cadastros de médicos e recepcionistas.
-            </p>
-          </motion.div>
-        )}
+          {user.role === 'admin' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="p-6 bg-white rounded-2xl shadow-lg border border-gray-200"
+            >
+               <h3 className="flex items-center text-xl font-semibold text-gray-800 mb-2">
+                <ShieldCheckIcon className="h-6 w-6 mr-3 text-indigo-600" />
+                Painel do Admin
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Aqui você poderá em breve validar os cadastros de médicos e recepcionistas.
+              </p>
+            </motion.div>
+          )}
+        </div>
       </div>
     </section>
   );
